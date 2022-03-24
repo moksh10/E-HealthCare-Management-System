@@ -1,22 +1,30 @@
 package com.ehcare.ehcare.entities;
 
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+
 @Entity
 @Table(name="patient")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","appointments","medicalRecords"})
 public class Patient {
 	
 	@Id
@@ -60,6 +68,13 @@ public class Patient {
 	@NotEmpty(message = "Patient age cannot be empty")
 	@Min(value=1,message = "Patient age invalid")
 	private int patientAge;
+	
+	@OneToMany(mappedBy = "patient",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	private Set<Appointment> appointments;
+
+	@OneToMany(mappedBy = "patient",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	private Set<MedicalRecord> medicalRecords;
+
 	
 	public Patient() {
 		// TODO Auto-generated constructor stub
@@ -136,6 +151,22 @@ public class Patient {
 
 	public void setPatientAge(int patientAge) {
 		this.patientAge = patientAge;
+	}
+
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
+	public Set<MedicalRecord> getMedicalRecords() {
+		return medicalRecords;
+	}
+
+	public void setMedicalRecords(Set<MedicalRecord> medicalRecords) {
+		this.medicalRecords = medicalRecords;
 	}
 	
 

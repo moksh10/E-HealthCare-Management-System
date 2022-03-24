@@ -1,22 +1,28 @@
 package com.ehcare.ehcare.entities;
 
 import java.sql.Time;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name="doctor")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","appointments","medicalRecords"})
 public class Doctor {
 	
 	@Id
@@ -64,6 +70,13 @@ public class Doctor {
 	@Column(name="shiftEndTime")
 	@NotEmpty(message = "Please mention shift time")
 	private Time shiftEndTime;
+	
+	@OneToMany(mappedBy = "doctor",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	private Set<Appointment> appointments;
+
+	@OneToMany(mappedBy = "doctor",fetch = FetchType.LAZY,cascade ={CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	private Set<MedicalRecord> medicalRecords;
+
 
 
 	public Doctor(String doctorEmail,String doctorName,String doctorContact,String doctorAddress,String specialistIn,Time shiftStartTime,Time shiftEndTime) {
@@ -164,6 +177,26 @@ public class Doctor {
 
 	public void setShiftEndTime(Time shiftEndTime) {
 		this.shiftEndTime = shiftEndTime;
+	}
+
+
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
+
+	public Set<MedicalRecord> getMedicalRecords() {
+		return medicalRecords;
+	}
+
+
+	public void setMedicalRecords(Set<MedicalRecord> medicalRecords) {
+		this.medicalRecords = medicalRecords;
 	}
 	
 	
