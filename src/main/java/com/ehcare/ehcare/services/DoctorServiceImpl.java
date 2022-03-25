@@ -63,7 +63,7 @@ public class DoctorServiceImpl implements DoctorService {
 	@Override
 	@Transactional
 	public Doctor getDoctorByDoctorEmail(String doctorEmail) {
-		if(doctorEmail.equals("invalid"))
+		if(doctorEmail.equals("invalid@gmail.com"))
 			throw new RuntimeException();
 		return doctorRepository.findDoctorByDoctorEmail(doctorEmail);
 	}
@@ -91,11 +91,12 @@ public class DoctorServiceImpl implements DoctorService {
 	}
 
 	@Override
+	@Transactional
 	public void invalidateDoctorAccount(int doctorID) {
 		Optional<Doctor> doctorToUpdate=doctorRepository.findById(doctorID);
 		if(!doctorToUpdate.isPresent())
 			throw new RuntimeException();
-		doctorToUpdate.get().setDoctorEmail("invalid");
+		doctorToUpdate.get().setDoctorEmail("invalid@gmail.com");
 		doctorToUpdate.get().setPassword("xxxxxxxx1");
 		doctorRepository.save(doctorToUpdate.get());
 		
