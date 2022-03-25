@@ -1,6 +1,7 @@
 package com.ehcare.ehcare.entities;
 
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -70,10 +71,10 @@ public class Patient {
 	private int patientAge;
 	
 	@OneToMany(mappedBy = "patient",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-	private Set<Appointment> appointments;
+	private List<Appointment> appointments;
 
 	@OneToMany(mappedBy = "patient",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-	private Set<MedicalRecord> medicalRecords;
+	private List<MedicalRecord> medicalRecords;
 
 	
 	public Patient() {
@@ -153,19 +154,19 @@ public class Patient {
 		this.patientAge = patientAge;
 	}
 
-	public Set<Appointment> getAppointments() {
+	public List<Appointment> getAppointments() {
 		return appointments;
 	}
 
-	public void setAppointments(Set<Appointment> appointments) {
+	public void setAppointments(List<Appointment> appointments) {
 		this.appointments = appointments;
 	}
 
-	public Set<MedicalRecord> getMedicalRecords() {
+	public List<MedicalRecord> getMedicalRecords() {
 		return medicalRecords;
 	}
 
-	public void setMedicalRecords(Set<MedicalRecord> medicalRecords) {
+	public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
 		this.medicalRecords = medicalRecords;
 	}
 	

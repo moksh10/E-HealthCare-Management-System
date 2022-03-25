@@ -1,7 +1,7 @@
 package com.ehcare.ehcare.entities;
 
 import java.sql.Time;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -72,10 +72,10 @@ public class Doctor {
 	private Time shiftEndTime;
 	
 	@OneToMany(mappedBy = "doctor",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-	private Set<Appointment> appointments;
+	private List<Appointment> appointments;
 
 	@OneToMany(mappedBy = "doctor",fetch = FetchType.LAZY,cascade ={CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-	private Set<MedicalRecord> medicalRecords;
+	private List<MedicalRecord> medicalRecords;
 
 
 
@@ -180,22 +180,22 @@ public class Doctor {
 	}
 
 
-	public Set<Appointment> getAppointments() {
+	public List<Appointment> getAppointments() {
 		return appointments;
 	}
 
 
-	public void setAppointments(Set<Appointment> appointments) {
+	public void setAppointments(List<Appointment> appointments) {
 		this.appointments = appointments;
 	}
 
 
-	public Set<MedicalRecord> getMedicalRecords() {
+	public List<MedicalRecord> getMedicalRecords() {
 		return medicalRecords;
 	}
 
 
-	public void setMedicalRecords(Set<MedicalRecord> medicalRecords) {
+	public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
 		this.medicalRecords = medicalRecords;
 	}
 	
