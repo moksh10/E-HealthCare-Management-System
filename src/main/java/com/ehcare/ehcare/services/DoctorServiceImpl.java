@@ -62,8 +62,10 @@ public class DoctorServiceImpl implements DoctorService {
 
 	@Override
 	@Transactional
-	public Doctor getDoctorByDoctorEmail(String doctorDoctorEmail) {
-		return doctorRepository.findDoctorByDoctorEmail(doctorDoctorEmail);
+	public Doctor getDoctorByDoctorEmail(String doctorEmail) {
+		if(doctorEmail.equals("invalid"))
+			throw new RuntimeException();
+		return doctorRepository.findDoctorByDoctorEmail(doctorEmail);
 	}
 
 	@Override
@@ -86,6 +88,17 @@ public class DoctorServiceImpl implements DoctorService {
 		while(iterator.hasNext())
 			allDoctors.add(iterator.next());
 		return allDoctors;
+	}
+
+	@Override
+	public void invalidateDoctorAccount(int doctorID) {
+		Optional<Doctor> doctorToUpdate=doctorRepository.findById(doctorID);
+		if(!doctorToUpdate.isPresent())
+			throw new RuntimeException();
+		doctorToUpdate.get().setDoctorEmail("invalid");
+		doctorToUpdate.get().setPassword("xxxxxxxx1");
+		doctorRepository.save(doctorToUpdate.get());
+		
 	}
 
 }

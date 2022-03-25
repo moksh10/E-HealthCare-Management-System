@@ -61,8 +61,8 @@ public class PatientImpl implements PatientService {
 
 	@Override
 	@Transactional
-	public Patient getPatientByPatientEmail(String patientPatientEmail) {
-		return patientRepository.findPatientByPatientEmail(patientPatientEmail);
+	public Patient getPatientByPatientEmail(String patientEmail) {
+		return patientRepository.findPatientByPatientEmail(patientEmail);
 	}
 
 	@Override

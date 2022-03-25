@@ -12,4 +12,5 @@ public interface DoctorService {
 	public Doctor getDoctorByDoctorEmail(String doctorEmail);
 	public void deleteDoctor(int doctorID);
 	public List<Doctor> getAllDoctors();
+	public void invalidateDoctorAccount(int doctorID);
 }
