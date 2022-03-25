@@ -1,6 +1,7 @@
 package com.ehcare.ehcare.repository;
 
-import java.util.Set;
+import java.sql.Date;
+import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,8 @@ import com.ehcare.ehcare.entities.Patient;
 @Repository
 public interface MedicalRecordRepository extends CrudRepository<MedicalRecord, Integer>{
 
-	Set<MedicalRecord> findMedicalRecordsByPatient(Patient patient);
-	Set<MedicalRecord> findMedicalRecordsByDoctor(Doctor doctor);
+	List<MedicalRecord> findMedicalRecordsByPatient(Patient patient);
+	List<MedicalRecord> findMedicalRecordsByDoctor(Doctor doctor);
+	List<MedicalRecord> findMedicalRecordsByMedicalRecordDate(Date date);
 
 }
