@@ -64,12 +64,12 @@ public class Doctor {
 	
 	@Column(name="shiftStartTime")
 	@NotEmpty(message = "Please mention shift time")
-	private Time shiftStartTime;
+	private String shiftStartTime;
 	
 
 	@Column(name="shiftEndTime")
 	@NotEmpty(message = "Please mention shift time")
-	private Time shiftEndTime;
+	private String shiftEndTime;
 	
 	@OneToMany(mappedBy = "doctor",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Appointment> appointments;
@@ -79,7 +79,7 @@ public class Doctor {
 
 
 
-	public Doctor(String doctorEmail,String doctorName,String doctorContact,String doctorAddress,String specialistIn,Time shiftStartTime,Time shiftEndTime) {
+	public Doctor(String doctorEmail,String doctorName,String doctorContact,String doctorAddress,String specialistIn,String shiftStartTime,String shiftEndTime) {
 		this.doctorEmail = doctorEmail;
 		this.doctorName = doctorName;
 		this.doctorContact = doctorContact;
@@ -160,22 +160,22 @@ public class Doctor {
 	}
 
 
-	public Time getShiftStartTime() {
+	public String getShiftStartTime() {
 		return shiftStartTime;
 	}
 
 
-	public void setShiftStartTime(Time shiftStartTime) {
+	public void setShiftStartTime(String shiftStartTime) {
 		this.shiftStartTime = shiftStartTime;
 	}
 
 
-	public Time getShiftEndTime() {
+	public String getShiftEndTime() {
 		return shiftEndTime;
 	}
 
 
-	public void setShiftEndTime(Time shiftEndTime) {
+	public void setShiftEndTime(String shiftEndTime) {
 		this.shiftEndTime = shiftEndTime;
 	}
 
