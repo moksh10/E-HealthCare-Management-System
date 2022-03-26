@@ -1,6 +1,5 @@
 package com.ehcare.ehcare.controllers;
 
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,61 +24,62 @@ import com.ehcare.ehcare.services.AppointmentService;
 @RestController
 @RequestMapping(path = "/appointment")
 public class AppointmentController {
-	
+
 	@Autowired
 	AppointmentService appointmentService;
-	
+
 	@GetMapping(path = "/{appointmentID}")
-	public ResponseEntity<ResponseSuccess> getAppointment(@PathVariable int appointmentID)
-	{
-		Appointment appointment= appointmentService.getAppointment(appointmentID);
-		return new ResponseEntity<>(new ResponseSuccess("Appointment fetched",true,appointment),HttpStatus.OK);
+	public ResponseEntity<ResponseSuccess> getAppointment(@PathVariable int appointmentID) {
+		Appointment appointment = appointmentService.getAppointment(appointmentID);
+		return new ResponseEntity<>(new ResponseSuccess("Appointment fetched", true, appointment), HttpStatus.OK);
 	}
-	@GetMapping(path="/doctor/{doctorID}")
-	public ResponseEntity<ResponseSuccess> getAppointmentsByDoctor(@PathVariable int doctorID)
-	{
-		
-		List<Appointment> appointments= appointmentService.getAllAppointmentsByDoctor(doctorID);
-		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched",true,appointments),HttpStatus.OK);
+
+	@GetMapping(path = "/doctor/{doctorID}")
+	public ResponseEntity<ResponseSuccess> getAppointmentsByDoctor(@PathVariable int doctorID) {
+
+		List<Appointment> appointments = appointmentService.getAllAppointmentsByDoctor(doctorID);
+		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched", true, appointments), HttpStatus.OK);
 	}
-	@GetMapping(path="/patient/{patientID}")
-	public ResponseEntity<ResponseSuccess> getAppointmentsByPatient(@PathVariable int patientID)
-	{
-		
-		List<Appointment> appointments= appointmentService.getAllAppointmentsByPatient(patientID);
-		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched",true,appointments),HttpStatus.OK);
+
+	@GetMapping(path = "/patient/{patientID}")
+	public ResponseEntity<ResponseSuccess> getAppointmentsByPatient(@PathVariable int patientID) {
+
+		List<Appointment> appointments = appointmentService.getAllAppointmentsByPatient(patientID);
+		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched", true, appointments), HttpStatus.OK);
 	}
+
 	@PostMapping("/{doctorID}")
-	public ResponseEntity<ResponseSuccess> saveAppointment(@PathVariable int doctorID,@Valid @RequestBody Appointment appointment,HttpServletRequest request)
-	{
-		int patientID=(int)request.getAttribute("patientID");
-		appointmentService.saveAppointment(patientID,doctorID,appointment);
-		return new ResponseEntity<>(new ResponseSuccess("Appointment created",true),HttpStatus.CREATED);
+	public ResponseEntity<ResponseSuccess> saveAppointment(@PathVariable int doctorID,
+			@Valid @RequestBody Appointment appointment, HttpServletRequest request) {
+		int patientID = (int) request.getAttribute("patientID");
+		appointmentService.saveAppointment(patientID, doctorID, appointment);
+		return new ResponseEntity<>(new ResponseSuccess("Appointment created", true), HttpStatus.CREATED);
 	}
+
 	@PutMapping
-	public ResponseEntity<ResponseSuccess> updateAppointment(HttpServletRequest request,@Valid @RequestBody Appointment appointment)
-	{
-		int appointmentID=(int)request.getAttribute("appointmentID");
+	public ResponseEntity<ResponseSuccess> updateAppointment(HttpServletRequest request,
+			@Valid @RequestBody Appointment appointment) {
+		int appointmentID = (int) request.getAttribute("appointmentID");
 		appointment.setAppointmentID(appointmentID);
-		Appointment updatedAppointment=appointmentService.updateAppointment(appointment.getAppointmentID(), appointment);
-		return new ResponseEntity<>(new ResponseSuccess("Appointment updated",true,updatedAppointment),HttpStatus.OK);
-		
+		Appointment updatedAppointment = appointmentService.updateAppointment(appointment.getAppointmentID(),
+				appointment);
+		return new ResponseEntity<>(new ResponseSuccess("Appointment updated", true, updatedAppointment),
+				HttpStatus.OK);
+
 	}
+
 	@DeleteMapping(path = "/{appointmentID}")
-	public ResponseEntity<ResponseSuccess> deleteAppointment(@PathVariable int appointmentID)
-	{
+	public ResponseEntity<ResponseSuccess> deleteAppointment(@PathVariable int appointmentID) {
 		appointmentService.deleteAppointment(appointmentID);
-		return new ResponseEntity<>(new ResponseSuccess("Appointment deleted",true),HttpStatus.NO_CONTENT);
-		
+		return new ResponseEntity<>(new ResponseSuccess("Appointment deleted", true), HttpStatus.NO_CONTENT);
+
 	}
+
 	@DeleteMapping(path = "/doctor/{doctorID}")
-	public ResponseEntity<ResponseSuccess> deleteAppointmentsByDoctor(@PathVariable int doctorID)
-	{
+	public ResponseEntity<ResponseSuccess> deleteAppointmentsByDoctor(@PathVariable int doctorID) {
 		appointmentService.deleteAppointmentByDoctor(doctorID);
-		return new ResponseEntity<>(new ResponseSuccess("Appointment deleted",true),HttpStatus.NO_CONTENT);
-		
+		return new ResponseEntity<>(new ResponseSuccess("Appointment deleted", true), HttpStatus.NO_CONTENT);
+
 	}
-	
 
 }
-

@@ -24,52 +24,50 @@ import com.ehcare.ehcare.services.DoctorService;
 @RestController
 @RequestMapping(path = "/doctor")
 public class DoctorController {
-	
+
 	@Autowired
 	DoctorService doctorService;
-	
+
 	@GetMapping(path = "/{doctorID}")
-	public ResponseEntity<ResponseSuccess> getDoctor(@PathVariable int doctorID)
-	{
-		Doctor doctor= doctorService.getDoctor(doctorID);
-		return new ResponseEntity<>(new ResponseSuccess("Doctor fetched",true,doctor),HttpStatus.OK);
+	public ResponseEntity<ResponseSuccess> getDoctor(@PathVariable int doctorID) {
+		Doctor doctor = doctorService.getDoctor(doctorID);
+		return new ResponseEntity<>(new ResponseSuccess("Doctor fetched", true, doctor), HttpStatus.OK);
 	}
+
 	@GetMapping
-	public ResponseEntity<ResponseSuccess> getDoctors()
-	{
-		List<Doctor> doctors= doctorService.getAllDoctors();
-		return new ResponseEntity<>(new ResponseSuccess("Doctors fetched",true,doctors),HttpStatus.OK);
+	public ResponseEntity<ResponseSuccess> getDoctors() {
+		List<Doctor> doctors = doctorService.getAllDoctors();
+		return new ResponseEntity<>(new ResponseSuccess("Doctors fetched", true, doctors), HttpStatus.OK);
 	}
+
 	@PostMapping
-	public ResponseEntity<ResponseSuccess> saveDoctor(@Valid @RequestBody Doctor doctor)
-	{
-		
+	public ResponseEntity<ResponseSuccess> saveDoctor(@Valid @RequestBody Doctor doctor) {
+
 		doctorService.saveDoctor(doctor);
-		return new ResponseEntity<>(new ResponseSuccess("Doctor created",true),HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseSuccess("Doctor created", true), HttpStatus.CREATED);
 	}
+
 	@PutMapping
-	public ResponseEntity<ResponseSuccess> updateDoctor(HttpServletRequest request,@Valid @RequestBody Doctor doctor)
-	{
-		int doctorID=(int)request.getAttribute("doctorID");
+	public ResponseEntity<ResponseSuccess> updateDoctor(HttpServletRequest request, @Valid @RequestBody Doctor doctor) {
+		int doctorID = (int) request.getAttribute("doctorID");
 		doctor.setDoctorID(doctorID);
-		Doctor updatedDoctor=doctorService.updateDoctor(doctor.getDoctorID(), doctor);
-		return new ResponseEntity<>(new ResponseSuccess("Doctor updated",true,updatedDoctor),HttpStatus.OK);
-		
+		Doctor updatedDoctor = doctorService.updateDoctor(doctor.getDoctorID(), doctor);
+		return new ResponseEntity<>(new ResponseSuccess("Doctor updated", true, updatedDoctor), HttpStatus.OK);
+
 	}
+
 	@DeleteMapping(path = "/{doctorID}")
-	public ResponseEntity<ResponseSuccess> deleteDoctor(@PathVariable int doctorID,HttpServletRequest request)
-	{
+	public ResponseEntity<ResponseSuccess> deleteDoctor(@PathVariable int doctorID, HttpServletRequest request) {
 		doctorService.deleteDoctor(doctorID);
-		return new ResponseEntity<>(new ResponseSuccess("Doctor deleted",true),HttpStatus.NO_CONTENT);
-		
+		return new ResponseEntity<>(new ResponseSuccess("Doctor deleted", true), HttpStatus.NO_CONTENT);
+
 	}
+
 	@PutMapping(path = "/invalidate/{doctorID}")
-	public ResponseEntity<ResponseSuccess> invalidateDoctor(@PathVariable int doctorID,HttpServletRequest request)
-	{
+	public ResponseEntity<ResponseSuccess> invalidateDoctor(@PathVariable int doctorID, HttpServletRequest request) {
 		doctorService.invalidateDoctorAccount(doctorID);
-		return new ResponseEntity<>(new ResponseSuccess("Doctor invalidated",true),HttpStatus.NO_CONTENT);
-		
+		return new ResponseEntity<>(new ResponseSuccess("Doctor invalidated", true), HttpStatus.NO_CONTENT);
+
 	}
 
 }
-

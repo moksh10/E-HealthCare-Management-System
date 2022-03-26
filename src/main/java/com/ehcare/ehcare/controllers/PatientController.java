@@ -24,45 +24,44 @@ import com.ehcare.ehcare.services.PatientService;
 @RestController
 @RequestMapping(path = "/patient")
 public class PatientController {
-	
+
 	@Autowired
 	PatientService patientService;
-	
+
 	@GetMapping(path = "/{patientID}")
-	public ResponseEntity<ResponseSuccess> getPatient(@PathVariable int patientID)
-	{
-		Patient patient= patientService.getPatient(patientID);
-		return new ResponseEntity<>(new ResponseSuccess("Patient fetched",true,patient),HttpStatus.OK);
+	public ResponseEntity<ResponseSuccess> getPatient(@PathVariable int patientID) {
+		Patient patient = patientService.getPatient(patientID);
+		return new ResponseEntity<>(new ResponseSuccess("Patient fetched", true, patient), HttpStatus.OK);
 	}
+
 	@GetMapping
-	public ResponseEntity<ResponseSuccess> getPatients()
-	{
-		List<Patient> patients= patientService.getAllPatients();
-		return new ResponseEntity<>(new ResponseSuccess("Patients fetched",true,patients),HttpStatus.OK);
+	public ResponseEntity<ResponseSuccess> getPatients() {
+		List<Patient> patients = patientService.getAllPatients();
+		return new ResponseEntity<>(new ResponseSuccess("Patients fetched", true, patients), HttpStatus.OK);
 	}
+
 	@PostMapping
-	public ResponseEntity<ResponseSuccess> savePatient(@Valid @RequestBody Patient patient)
-	{
-		
+	public ResponseEntity<ResponseSuccess> savePatient(@Valid @RequestBody Patient patient) {
+
 		patientService.savePatient(patient);
-		return new ResponseEntity<>(new ResponseSuccess("Patient created",true),HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseSuccess("Patient created", true), HttpStatus.CREATED);
 	}
+
 	@PutMapping
-	public ResponseEntity<ResponseSuccess> updatePatient(HttpServletRequest request,@Valid @RequestBody Patient patient)
-	{
-		int patientID=(int)request.getAttribute("patientID");
+	public ResponseEntity<ResponseSuccess> updatePatient(HttpServletRequest request,
+			@Valid @RequestBody Patient patient) {
+		int patientID = (int) request.getAttribute("patientID");
 		patient.setPatientID(patientID);
-		Patient updatedPatient=patientService.updatePatient(patient.getPatientID(), patient);
-		return new ResponseEntity<>(new ResponseSuccess("Patient updated",true,updatedPatient),HttpStatus.OK);
-		
+		Patient updatedPatient = patientService.updatePatient(patient.getPatientID(), patient);
+		return new ResponseEntity<>(new ResponseSuccess("Patient updated", true, updatedPatient), HttpStatus.OK);
+
 	}
+
 	@DeleteMapping(path = "/{patientID}")
-	public ResponseEntity<ResponseSuccess> deletePatient(@PathVariable int patientID,HttpServletRequest request)
-	{
+	public ResponseEntity<ResponseSuccess> deletePatient(@PathVariable int patientID, HttpServletRequest request) {
 		patientService.deletePatient(patientID);
-		return new ResponseEntity<>(new ResponseSuccess("Patient deleted",true),HttpStatus.NO_CONTENT);
-		
+		return new ResponseEntity<>(new ResponseSuccess("Patient deleted", true), HttpStatus.NO_CONTENT);
+
 	}
 
 }
-

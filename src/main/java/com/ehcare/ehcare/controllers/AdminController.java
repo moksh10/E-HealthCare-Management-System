@@ -24,45 +24,44 @@ import com.ehcare.ehcare.services.AdminService;
 @RestController
 @RequestMapping(path = "/admin")
 public class AdminController {
-	
+
 	@Autowired
 	AdminService adminService;
-	
+
 	@GetMapping(path = "/{adminID}")
-	public ResponseEntity<ResponseSuccess> getAdmin(@PathVariable int adminID)
-	{
-		Admin admin= adminService.getAdmin(adminID);
-		return new ResponseEntity<>(new ResponseSuccess("Admin fetched",true,admin),HttpStatus.OK);
+	public ResponseEntity<ResponseSuccess> getAdmin(@PathVariable int adminID) {
+		Admin admin = adminService.getAdmin(adminID);
+		return new ResponseEntity<>(new ResponseSuccess("Admin fetched", true, admin), HttpStatus.OK);
 	}
+
 	@GetMapping
-	public ResponseEntity<ResponseSuccess> getAdmins()
-	{
-		List<Admin> admins= adminService.getAllAdmins();
-		return new ResponseEntity<>(new ResponseSuccess("Admins fetched",true,admins),HttpStatus.OK);
+	public ResponseEntity<ResponseSuccess> getAdmins() {
+		List<Admin> admins = adminService.getAllAdmins();
+		return new ResponseEntity<>(new ResponseSuccess("Admins fetched", true, admins), HttpStatus.OK);
 	}
+
 	@PostMapping
-	public ResponseEntity<ResponseSuccess> saveAdmin(@Valid @RequestBody Admin admin)
-	{
-		
+	public ResponseEntity<ResponseSuccess> saveAdmin(@Valid @RequestBody Admin admin) {
+
 		adminService.saveAdmin(admin);
-		return new ResponseEntity<>(new ResponseSuccess("Admin created",true),HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseSuccess("Admin created", true), HttpStatus.CREATED);
 	}
+
 	@PutMapping
-	public ResponseEntity<ResponseSuccess> updateAdmin(HttpServletRequest request,@Valid @RequestBody Admin admin)
-	{
-		int adminID=(int)request.getAttribute("adminID");
+	public ResponseEntity<ResponseSuccess> updateAdmin(HttpServletRequest request, @Valid @RequestBody Admin admin) {
+		int adminID = (int) request.getAttribute("adminID");
 		admin.setAdminID(adminID);
-		Admin updatedAdmin=adminService.updateAdmin(admin.getAdminID(), admin);
-		return new ResponseEntity<>(new ResponseSuccess("Admin updated",true,updatedAdmin),HttpStatus.OK);
-		
+		Admin updatedAdmin = adminService.updateAdmin(admin.getAdminID(), admin);
+		return new ResponseEntity<>(new ResponseSuccess("Admin updated", true, updatedAdmin), HttpStatus.OK);
+
 	}
+
 	@DeleteMapping
-	public ResponseEntity<ResponseSuccess> deleteAdmin(HttpServletRequest request)
-	{
-		int adminID=(int)request.getAttribute("adminID");
+	public ResponseEntity<ResponseSuccess> deleteAdmin(HttpServletRequest request) {
+		int adminID = (int) request.getAttribute("adminID");
 		adminService.deleteAdmin(adminID);
-		return new ResponseEntity<>(new ResponseSuccess("Admin deleted",true),HttpStatus.NO_CONTENT);
-		
+		return new ResponseEntity<>(new ResponseSuccess("Admin deleted", true), HttpStatus.NO_CONTENT);
+
 	}
 
 }
