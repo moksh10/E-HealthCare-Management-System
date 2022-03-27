@@ -12,32 +12,34 @@ import org.springframework.stereotype.Service;
 import com.ehcare.ehcare.entities.MedicalRecord;
 import com.ehcare.ehcare.entities.Doctor;
 import com.ehcare.ehcare.entities.Patient;
+import com.ehcare.ehcare.handlers.MedicalRecordNotFound;
+import com.ehcare.ehcare.handlers.UserNotFoundException;
 import com.ehcare.ehcare.repository.MedicalRecordRepository;
 import com.ehcare.ehcare.repository.DoctorRepository;
 import com.ehcare.ehcare.repository.PatientRepository;
 
 @Service
-public class MedicalRecordImpl implements MedicalRecordService{
-	
+public class MedicalRecordImpl implements MedicalRecordService {
+
 	@Autowired
 	private MedicalRecordRepository medicalRecordRepository;
-	
+
 	@Autowired
 	private PatientRepository patientRepository;
-	
+
 	@Autowired
 	private DoctorRepository doctorRepository;
-	
+
 	@Override
 	@Transactional
-	public MedicalRecord saveMedicalRecord(int patientID,int doctorID,MedicalRecord medicalRecord) {
-		Optional<Doctor> doctor=doctorRepository.findById(doctorID);
-		if(!doctor.isPresent())
-			throw new RuntimeException();
+	public MedicalRecord saveMedicalRecord(int patientID, int doctorID, MedicalRecord medicalRecord) {
+		Optional<Doctor> doctor = doctorRepository.findById(doctorID);
+		if (!doctor.isPresent())
+			throw new UserNotFoundException();
 		medicalRecord.setDoctor(doctor.get());
-		Optional<Patient> patient=patientRepository.findById(patientID);
-		if(!patient.isPresent())
-			throw new RuntimeException();
+		Optional<Patient> patient = patientRepository.findById(patientID);
+		if (!patient.isPresent())
+			throw new UserNotFoundException();
 		medicalRecord.setPatient(patient.get());
 		return medicalRecordRepository.save(medicalRecord);
 	}
@@ -45,10 +47,10 @@ public class MedicalRecordImpl implements MedicalRecordService{
 	@Override
 	@Transactional
 	public MedicalRecord updateMedicalRecord(int medicalRecordID, MedicalRecord medicalRecord) {
-		Optional<MedicalRecord> medicalRecordToGet=medicalRecordRepository.findById(medicalRecordID);
-		if(!medicalRecordToGet.isPresent())
-			throw new RuntimeException();
-		MedicalRecord medicalRecordToUpdate=medicalRecordToGet.get();
+		Optional<MedicalRecord> medicalRecordToGet = medicalRecordRepository.findById(medicalRecordID);
+		if (!medicalRecordToGet.isPresent())
+			throw new MedicalRecordNotFound();
+		MedicalRecord medicalRecordToUpdate = medicalRecordToGet.get();
 		medicalRecordToUpdate.setMedicalRecordDate(medicalRecord.getMedicalRecordDate());
 		medicalRecordToUpdate.setMedicalRecordDiagnosis(medicalRecord.getMedicalRecordDiagnosis());
 		medicalRecordToUpdate.setMedicalRecordDrugs(medicalRecord.getMedicalRecordDrugs());
@@ -58,41 +60,38 @@ public class MedicalRecordImpl implements MedicalRecordService{
 	@Override
 	@Transactional
 	public MedicalRecord getMedicalRecord(int medicalRecordID) {
-		Optional<MedicalRecord> medicalRecordToGet=medicalRecordRepository.findById(medicalRecordID);
-		if(!medicalRecordToGet.isPresent())
-			throw new RuntimeException();
+		Optional<MedicalRecord> medicalRecordToGet = medicalRecordRepository.findById(medicalRecordID);
+		if (!medicalRecordToGet.isPresent())
+			throw new MedicalRecordNotFound();
 		return medicalRecordToGet.get();
 	}
-
-	
 
 	@Override
 	@Transactional
 	public void deleteMedicalRecord(int medicalRecordID) {
 		Optional<MedicalRecord> medicalRecordToGet = medicalRecordRepository.findById(medicalRecordID);
-		if(!medicalRecordToGet.isPresent())
-			throw new RuntimeException();
+		if (!medicalRecordToGet.isPresent())
+			throw new MedicalRecordNotFound();
 		MedicalRecord medicalRecordToDelete = medicalRecordToGet.get();
-	    medicalRecordRepository.delete(medicalRecordToDelete);
-		
+		medicalRecordRepository.delete(medicalRecordToDelete);
+
 	}
 
-	
 	@Override
 	@Transactional
 	public List<MedicalRecord> getAllMedicalRecordsByPatient(int patientID) {
-		Optional<Patient> patient=patientRepository.findById(patientID);
-		if(!patient.isPresent())
-			throw new RuntimeException();
+		Optional<Patient> patient = patientRepository.findById(patientID);
+		if (!patient.isPresent())
+			throw new UserNotFoundException();
 		return medicalRecordRepository.findMedicalRecordsByPatient(patient.get());
 	}
 
 	@Override
 	@Transactional
 	public List<MedicalRecord> getAllMedicalRecordsByDoctor(int doctorID) {
-		Optional<Doctor> doctor=doctorRepository.findById(doctorID);
-		if(!doctor.isPresent())
-			throw new RuntimeException();
+		Optional<Doctor> doctor = doctorRepository.findById(doctorID);
+		if (!doctor.isPresent())
+			throw new UserNotFoundException();
 		return medicalRecordRepository.findMedicalRecordsByDoctor(doctor.get());
 	}
 
@@ -102,5 +101,4 @@ public class MedicalRecordImpl implements MedicalRecordService{
 		return medicalRecordRepository.findMedicalRecordsByMedicalRecordDate(date);
 	}
 
-	
 }

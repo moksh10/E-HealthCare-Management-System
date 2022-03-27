@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ehcare.ehcare.entities.Patient;
+import com.ehcare.ehcare.handlers.UserAlreadyExistsException;
+import com.ehcare.ehcare.handlers.UserNotFoundException;
 import com.ehcare.ehcare.repository.PatientRepository;
 
 @Service
@@ -19,16 +21,16 @@ public class PatientImpl implements PatientService {
 
 	@Autowired
 	private PatientRepository patientRepository;
-	
+
 	@Autowired
 	private PasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Override
 	@Transactional
 	public Patient savePatient(Patient patient) {
-		Patient checkPatient=patientRepository.findPatientByPatientEmail(patient.getPatientEmail());
-		if(checkPatient!=null)
-			throw new RuntimeException();
+		Patient checkPatient = patientRepository.findPatientByPatientEmail(patient.getPatientEmail());
+		if (checkPatient != null)
+			throw new UserAlreadyExistsException();
 		patient.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
 		return patientRepository.save(patient);
 	}
@@ -36,10 +38,10 @@ public class PatientImpl implements PatientService {
 	@Override
 	@Transactional
 	public Patient updatePatient(int patientID, Patient patient) {
-		Optional<Patient> patientToGet=patientRepository.findById(patientID);
-		if(!patientToGet.isPresent())
-			throw new RuntimeException();
-		Patient patientToUpdate=patientToGet.get();
+		Optional<Patient> patientToGet = patientRepository.findById(patientID);
+		if (!patientToGet.isPresent())
+			throw new UserNotFoundException();
+		Patient patientToUpdate = patientToGet.get();
 		patientToUpdate.setPatientEmail(patient.getPatientEmail());
 		patientToUpdate.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
 		patientToUpdate.setPatientName(patient.getPatientName());
@@ -53,9 +55,9 @@ public class PatientImpl implements PatientService {
 	@Override
 	@Transactional
 	public Patient getPatient(int patientID) {
-		Optional<Patient> patientToGet=patientRepository.findById(patientID);
-		if(!patientToGet.isPresent())
-			throw new RuntimeException();
+		Optional<Patient> patientToGet = patientRepository.findById(patientID);
+		if (!patientToGet.isPresent())
+			throw new UserNotFoundException();
 		return patientToGet.get();
 	}
 
@@ -69,20 +71,20 @@ public class PatientImpl implements PatientService {
 	@Transactional
 	public void deletePatient(int patientID) {
 		Optional<Patient> patientToGet = patientRepository.findById(patientID);
-		if(!patientToGet.isPresent())
-			throw new RuntimeException();
+		if (!patientToGet.isPresent())
+			throw new UserNotFoundException();
 		Patient patientToDelete = patientToGet.get();
-	    patientRepository.delete(patientToDelete);
-		
+		patientRepository.delete(patientToDelete);
+
 	}
 
 	@Override
 	@Transactional
 	public List<Patient> getAllPatients() {
-		List<Patient> allPatients=new LinkedList<Patient>();
-		Iterable<Patient> patients=patientRepository.findAll();
-		Iterator<Patient> iterator=patients.iterator();
-		while(iterator.hasNext())
+		List<Patient> allPatients = new LinkedList<Patient>();
+		Iterable<Patient> patients = patientRepository.findAll();
+		Iterator<Patient> iterator = patients.iterator();
+		while (iterator.hasNext())
 			allPatients.add(iterator.next());
 		return allPatients;
 	}
