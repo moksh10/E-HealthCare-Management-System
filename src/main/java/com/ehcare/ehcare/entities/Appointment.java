@@ -23,31 +23,31 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="appointmentID")
+	@Column(name="appointment_id")
 	private int appointmentID;
 	
 	
-	@Column(name="appointmentDate")
+	@Column(name="appointment_date")
 	@NotEmpty(message = "Appointment date required")
 	private Date appointmentDate;
 	
 	
-	@Column(name="healthProblem")
+	@Column(name="health_problem")
 	@NotEmpty(message = "Description of health problem required")
 	@Size(max=750,message = "Maximum length of description of health problem exceeded")
 	private String healthProblem;
 	
-	@Column(name="appointmentStatus")
+	@Column(name="appointment_status")
 	@NotEmpty(message = "Appointment status required")
 	@Size(max=30,message = "Maximum length of appointment status exceeded")
 	private String appointmentStatus;
 	
 	@ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-	@JoinColumn(name="patientID")
+	@JoinColumn(name="patient_id")
 	private Patient patient;
 	
 	@ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-	@JoinColumn(name="doctorID")
+	@JoinColumn(name="doctor_id")
 	private Doctor doctor;
 	
 	public Appointment() {

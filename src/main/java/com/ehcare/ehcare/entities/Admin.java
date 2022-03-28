@@ -9,9 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -22,13 +21,14 @@ public class Admin {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="adminID")
+	@Column(name="admin_id")
 	private int adminID;
 	
-	@Column(name="adminEmail")
+	@Column(name="admin_email")
 	@Email(message = "Not a valid email")
 	@NotEmpty(message = "Admin email required")
 	@Size(max=200,message = "Email length exceeded: 200")
+	@NotNull
 	private String adminEmail;
 	
 	@Column(name="password")
@@ -37,12 +37,12 @@ public class Admin {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
-	@Column(name="adminName")
+	@Column(name="admin_name")
 	@NotEmpty(message = "Admin name cannot be empty")
 	@Size(max=200,message = "Admin name length exceeded: 200")
 	private String adminName;
 	
-	@Column(name="adminContact")
+	@Column(name="admin_contact")
 	@NotEmpty(message = "Admin contact cannot be empty")
 	@Size(max=12,message = "Admin name length exceeded: 12")
 	private String adminContact;
@@ -108,6 +108,14 @@ public class Admin {
 	public void setAdminContact(String adminContact) {
 		this.adminContact = adminContact;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Admin [adminID=" + adminID + ", adminEmail=" + adminEmail + ", password=" + password + ", adminName="
+				+ adminName + ", adminContact=" + adminContact + "]";
+	}
+	
 	
 	
 	

@@ -2,7 +2,6 @@ package com.ehcare.ehcare.entities;
 
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,13 +30,14 @@ public class Patient {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="patientID")
+	@Column(name="patient_id")
 	private int patientID;
 	
-	@Column(name="patientEmail")
+	@Column(name="patient_email")
 	@Email(message = "Not a valid email")
 	@NotEmpty(message = "Patient email required")
 	@Size(max=200,message = "Email length exceeded: 200")
+	@NotNull
 	private String patientEmail;
 	
 	@Column(name="password")
@@ -45,27 +46,27 @@ public class Patient {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
-	@Column(name="patientName")
+	@Column(name="patient_name")
 	@NotEmpty(message = "Patient name cannot be empty")
 	@Size(max=200,message = "Patient name length exceeded: 200")
 	private String patientName;
 	
-	@Column(name="patientContact")
+	@Column(name="patient_contact")
 	@NotEmpty(message = "Patient contact cannot be empty")
 	@Size(max=12,message = "Patient name length exceeded: 12")
 	private String patientContact;
 	
-	@Column(name="patientAddress")
+	@Column(name="patient_address")
 	@NotEmpty(message = "Patient name cannot be empty")
 	@Size(max=400,message = "Patient address length exceeded: 400")
 	private String patientAddress;
 	
-	@Column(name="patientGender")
+	@Column(name="patient_gender")
 	@NotEmpty(message = "Patient gender cannot be empty")
 	@Size(max=12,message = "Patient gender length exceeded: 12")
 	private String patientGender;
 	
-	@Column(name="patientAge")
+	@Column(name="patient_age")
 	@NotEmpty(message = "Patient age cannot be empty")
 	@Min(value=1,message = "Patient age invalid")
 	private int patientAge;

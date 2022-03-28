@@ -18,34 +18,34 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name="medicalRecord")
+@Table(name="medical_record")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","patient","doctor"})
 public class MedicalRecord {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="medicalRecordID")
+	@Column(name="medicalrecord_id")
 	private int medicalRecordID;
 	
-	@Column(name="medicalRecordDate")
+	@Column(name="medicalrecord_date")
 	@NotEmpty(message = "Medical Record date required")
 	private Date medicalRecordDate;
 	
-	@Column(name="medicalRecordDiagnosis")
+	@Column(name="medicalrecord_diagnosis")
 	@NotEmpty(message = "Medical Record diagnosis required")
 	@Size(max=1800,message = "Maximum length of medical record diagnosis exceeded")
 	private String medicalRecordDiagnosis;
 	
-	@Column(name="medicalRecordDrugs")
+	@Column(name="medicalrecord_drugs")
 	@NotEmpty(message = "Medical Record drugs required")
 	@Size(max=700,message = "Maximum length of medical record drugs exceeded")
 	private String medicalRecordDrugs;
 	
 	@ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-	@JoinColumn(name="patientID")
+	@JoinColumn(name="patient_id")
 	private Patient patient;
 	
 	@ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-	@JoinColumn(name="doctorID")
+	@JoinColumn(name="doctor_id")
 	private Doctor doctor;
 	
 	public MedicalRecord() {

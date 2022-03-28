@@ -1,6 +1,5 @@
 package com.ehcare.ehcare.entities;
 
-import java.sql.Time;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,13 +27,14 @@ public class Doctor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="doctorID")
+	@Column(name="doctor_id")
 	private int doctorID;
 	
-	@Column(name="doctorEmail")
+	@Column(name="doctor_email")
 	@Email(message = "Not a valid email")
 	@NotEmpty(message = "Doctor email required")
 	@Size(max=200,message = "Email length exceeded: 200")
+	@NotNull
 	private String doctorEmail;
 	
 	@Column(name="password")
@@ -42,32 +43,32 @@ public class Doctor {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
-	@Column(name="doctorName")
+	@Column(name="doctor_name")
 	@NotEmpty(message = "Doctor name cannot be empty")
 	@Size(max=200,message = "Doctor name length exceeded: 200")
 	private String doctorName;
 	
-	@Column(name="doctorContact")
+	@Column(name="doctor_contact")
 	@NotEmpty(message = "Doctor contact cannot be empty")
 	@Size(max=12,message = "Doctor name length exceeded: 12")
 	private String doctorContact;
 	
-	@Column(name="doctorAddress")
+	@Column(name="doctor_address")
 	@NotEmpty(message = "Doctor name cannot be empty")
 	@Size(max=400,message = "Doctor address length exceeded: 400")
 	private String doctorAddress;
 	
-	@Column(name="specialistIn")
+	@Column(name="specialist_in")
 	@NotEmpty(message = "Please mention doctor's speciality")
 	@Size(max=200,message = "Doctor specialiy length exceeded: 200")
 	private String specialistIn;
 	
-	@Column(name="shiftStartTime")
+	@Column(name="shift_start_time")
 	@NotEmpty(message = "Please mention shift time")
 	private String shiftStartTime;
 	
 
-	@Column(name="shiftEndTime")
+	@Column(name="shift_end_time")
 	@NotEmpty(message = "Please mention shift time")
 	private String shiftEndTime;
 	
