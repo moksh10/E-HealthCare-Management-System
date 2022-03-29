@@ -21,6 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public PasswordEncoder passwordEncoder;
+	
+	
 
 	@Override
 	@Bean
