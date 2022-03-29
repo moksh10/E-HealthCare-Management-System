@@ -49,8 +49,8 @@ public class AdminController {
 
 	@PutMapping
 	public ResponseEntity<ResponseSuccess> updateAdmin(HttpServletRequest request, @Valid @RequestBody Admin admin) {
-		// int adminID = (int) request.getAttribute("adminID");
-		// admin.setAdminID(adminID);
+		int adminID = (int) request.getAttribute("adminID");
+		admin.setAdminID(adminID);
 		Admin updatedAdmin = adminService.updateAdmin(admin.getAdminID(), admin);
 		return new ResponseEntity<>(new ResponseSuccess("Admin updated", true, updatedAdmin), HttpStatus.OK);
 

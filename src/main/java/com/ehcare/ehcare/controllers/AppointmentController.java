@@ -48,10 +48,10 @@ public class AppointmentController {
 		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched", true, appointments), HttpStatus.OK);
 	}
 
-	@PostMapping("/{doctorID}/{patientID}")
-	public ResponseEntity<ResponseSuccess> saveAppointment(@PathVariable("patientID") int patientID,
-			@PathVariable int doctorID, @Valid @RequestBody Appointment appointment, HttpServletRequest request) {
-//		int patientID = (int) request.getAttribute("patientID");
+	@PostMapping("/{doctorID}")
+	public ResponseEntity<ResponseSuccess> saveAppointment(@PathVariable int doctorID,
+			@Valid @RequestBody Appointment appointment, HttpServletRequest request) {
+		int patientID = (int) request.getAttribute("patientID");
 		appointmentService.saveAppointment(patientID, doctorID, appointment);
 		return new ResponseEntity<>(new ResponseSuccess("Appointment created", true, appointment), HttpStatus.CREATED);
 	}

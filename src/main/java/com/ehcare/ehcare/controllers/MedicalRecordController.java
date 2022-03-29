@@ -29,10 +29,10 @@ public class MedicalRecordController {
 
 	@Autowired
 	MedicalRecordService medicalRecordService;
-	
+
 	@Autowired
-    DateUtil dateUtil;
-	
+	DateUtil dateUtil;
+
 	@GetMapping(path = "/{medicalRecordID}")
 	public ResponseEntity<ResponseSuccess> getMedicalRecord(@PathVariable int medicalRecordID) {
 		MedicalRecord medicalRecord = medicalRecordService.getMedicalRecord(medicalRecordID);
@@ -49,7 +49,7 @@ public class MedicalRecordController {
 	@GetMapping(path = "/date/{date}")
 	public ResponseEntity<ResponseSuccess> getMedicalRecordsByDate(@PathVariable("date") String date) {
 
-		Date tempDate=dateUtil.parse(date);
+		Date tempDate = dateUtil.parse(date);
 		List<MedicalRecord> medicalRecords = medicalRecordService.getAllMedicalRecordsByMedicalRecordDate(tempDate);
 		return new ResponseEntity<>(new ResponseSuccess("MedicalRecords fetched", true, medicalRecords), HttpStatus.OK);
 	}
@@ -61,12 +61,13 @@ public class MedicalRecordController {
 		return new ResponseEntity<>(new ResponseSuccess("MedicalRecords fetched", true, medicalRecords), HttpStatus.OK);
 	}
 
-	@PostMapping("/{doctorID}/{patientID}")
-	public ResponseEntity<ResponseSuccess> saveMedicalRecord(@PathVariable int patientID,@PathVariable int doctorID,
+	@PostMapping("/{patientID}")
+	public ResponseEntity<ResponseSuccess> saveMedicalRecord(@PathVariable int patientID,
 			@Valid @RequestBody MedicalRecord medicalRecord, HttpServletRequest request) {
-		//int doctorID = (int) request.getAttribute("doctorID");
+		int doctorID = (int) request.getAttribute("doctorID");
 		medicalRecordService.saveMedicalRecord(patientID, doctorID, medicalRecord);
-		return new ResponseEntity<>(new ResponseSuccess("MedicalRecord created", true, medicalRecord), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseSuccess("MedicalRecord created", true, medicalRecord),
+				HttpStatus.CREATED);
 	}
 
 	@PutMapping

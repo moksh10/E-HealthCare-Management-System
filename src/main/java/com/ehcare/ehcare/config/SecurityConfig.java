@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.ehcare.ehcare.filter.JwtRequestFilter;
 import com.ehcare.ehcare.services.UserDetailsService;
 
 @Configuration
@@ -22,7 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public PasswordEncoder passwordEncoder;
 	
-	
+	@Autowired
+	private JwtRequestFilter jwtRequestFilter;
 
 	@Override
 	@Bean
