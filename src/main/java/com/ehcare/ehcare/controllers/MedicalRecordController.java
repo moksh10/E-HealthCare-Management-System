@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ehcare.ehcare.dto.ResponseSuccess;
 import com.ehcare.ehcare.entities.MedicalRecord;
 import com.ehcare.ehcare.services.MedicalRecordService;
+import com.ehcare.ehcare.util.DateUtil;
 
 @RestController
 @RequestMapping(path = "/medicalRecord")
@@ -29,7 +29,10 @@ public class MedicalRecordController {
 
 	@Autowired
 	MedicalRecordService medicalRecordService;
-
+	
+	@Autowired
+    DateUtil dateUtil;
+	
 	@GetMapping(path = "/{medicalRecordID}")
 	public ResponseEntity<ResponseSuccess> getMedicalRecord(@PathVariable int medicalRecordID) {
 		MedicalRecord medicalRecord = medicalRecordService.getMedicalRecord(medicalRecordID);
@@ -44,10 +47,10 @@ public class MedicalRecordController {
 	}
 
 	@GetMapping(path = "/date/{date}")
-	public ResponseEntity<ResponseSuccess> getMedicalRecordsByDate(
-			@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+	public ResponseEntity<ResponseSuccess> getMedicalRecordsByDate(@PathVariable("date") String date) {
 
-		List<MedicalRecord> medicalRecords = medicalRecordService.getAllMedicalRecordsByMedicalRecordDate(date);
+		Date tempDate=dateUtil.parse(date);
+		List<MedicalRecord> medicalRecords = medicalRecordService.getAllMedicalRecordsByMedicalRecordDate(tempDate);
 		return new ResponseEntity<>(new ResponseSuccess("MedicalRecords fetched", true, medicalRecords), HttpStatus.OK);
 	}
 
