@@ -43,7 +43,10 @@ public class DoctorServiceImpl implements DoctorService {
 			throw new UserNotFoundException();
 		Doctor doctorToUpdate = doctorToGet.get();
 		doctorToUpdate.setDoctorEmail(doctor.getDoctorEmail());
-		doctorToUpdate.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
+		if(doctor.getPassword()!=null)
+			doctorToUpdate.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
+		else
+			doctorToUpdate.setPassword(doctorToUpdate.getPassword());
 		doctorToUpdate.setDoctorName(doctor.getDoctorName());
 		doctorToUpdate.setDoctorContact(doctor.getDoctorContact());
 		doctorToUpdate.setDoctorAddress(doctor.getDoctorAddress());

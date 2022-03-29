@@ -44,13 +44,13 @@ public class DoctorController {
 	public ResponseEntity<ResponseSuccess> saveDoctor(@Valid @RequestBody Doctor doctor) {
 
 		doctorService.saveDoctor(doctor);
-		return new ResponseEntity<>(new ResponseSuccess("Doctor created", true), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseSuccess("Doctor created", true, doctor), HttpStatus.CREATED);
 	}
 
 	@PutMapping
 	public ResponseEntity<ResponseSuccess> updateDoctor(HttpServletRequest request, @Valid @RequestBody Doctor doctor) {
-		int doctorID = (int) request.getAttribute("doctorID");
-		doctor.setDoctorID(doctorID);
+//		int doctorID = (int) request.getAttribute("doctorID");
+//		doctor.setDoctorID(doctorID);
 		Doctor updatedDoctor = doctorService.updateDoctor(doctor.getDoctorID(), doctor);
 		return new ResponseEntity<>(new ResponseSuccess("Doctor updated", true, updatedDoctor), HttpStatus.OK);
 
@@ -59,14 +59,14 @@ public class DoctorController {
 	@DeleteMapping(path = "/{doctorID}")
 	public ResponseEntity<ResponseSuccess> deleteDoctor(@PathVariable int doctorID, HttpServletRequest request) {
 		doctorService.deleteDoctor(doctorID);
-		return new ResponseEntity<>(new ResponseSuccess("Doctor deleted", true), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ResponseSuccess("Doctor deleted", true), HttpStatus.OK);
 
 	}
 
 	@PutMapping(path = "/invalidate/{doctorID}")
 	public ResponseEntity<ResponseSuccess> invalidateDoctor(@PathVariable int doctorID, HttpServletRequest request) {
 		doctorService.invalidateDoctorAccount(doctorID);
-		return new ResponseEntity<>(new ResponseSuccess("Doctor invalidated", true), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ResponseSuccess("Doctor invalidated", true), HttpStatus.OK);
 
 	}
 

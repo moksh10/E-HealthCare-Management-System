@@ -38,7 +38,6 @@ public class Doctor {
 	private String doctorEmail;
 	
 	@Column(name="password")
-	@NotEmpty(message = "Password required")
 	@Size(min=8,message = "Password must be minimum of 8 characters")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
@@ -79,6 +78,9 @@ public class Doctor {
 	private List<MedicalRecord> medicalRecords;
 
 
+	public Doctor() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Doctor(String doctorEmail,String doctorName,String doctorContact,String doctorAddress,String specialistIn,String shiftStartTime,String shiftEndTime) {
 		this.doctorEmail = doctorEmail;

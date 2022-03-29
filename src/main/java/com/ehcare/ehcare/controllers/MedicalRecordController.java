@@ -45,7 +45,7 @@ public class MedicalRecordController {
 
 	@GetMapping(path = "/date/{date}")
 	public ResponseEntity<ResponseSuccess> getMedicalRecordsByDate(
-			@PathVariable("date") @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
+			@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
 
 		List<MedicalRecord> medicalRecords = medicalRecordService.getAllMedicalRecordsByMedicalRecordDate(date);
 		return new ResponseEntity<>(new ResponseSuccess("MedicalRecords fetched", true, medicalRecords), HttpStatus.OK);
@@ -58,19 +58,17 @@ public class MedicalRecordController {
 		return new ResponseEntity<>(new ResponseSuccess("MedicalRecords fetched", true, medicalRecords), HttpStatus.OK);
 	}
 
-	@PostMapping("/{doctorID}")
-	public ResponseEntity<ResponseSuccess> saveMedicalRecord(@PathVariable int doctorID,
+	@PostMapping("/{doctorID}/{patientID}")
+	public ResponseEntity<ResponseSuccess> saveMedicalRecord(@PathVariable int patientID,@PathVariable int doctorID,
 			@Valid @RequestBody MedicalRecord medicalRecord, HttpServletRequest request) {
-		int patientID = (int) request.getAttribute("patientID");
+		//int doctorID = (int) request.getAttribute("doctorID");
 		medicalRecordService.saveMedicalRecord(patientID, doctorID, medicalRecord);
-		return new ResponseEntity<>(new ResponseSuccess("MedicalRecord created", true), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseSuccess("MedicalRecord created", true, medicalRecord), HttpStatus.CREATED);
 	}
 
 	@PutMapping
 	public ResponseEntity<ResponseSuccess> updateMedicalRecord(HttpServletRequest request,
 			@Valid @RequestBody MedicalRecord medicalRecord) {
-		int medicalRecordID = (int) request.getAttribute("medicalRecordID");
-		medicalRecord.setMedicalRecordID(medicalRecordID);
 		MedicalRecord updatedMedicalRecord = medicalRecordService
 				.updateMedicalRecord(medicalRecord.getMedicalRecordID(), medicalRecord);
 		return new ResponseEntity<>(new ResponseSuccess("MedicalRecord updated", true, updatedMedicalRecord),
@@ -81,7 +79,7 @@ public class MedicalRecordController {
 	@DeleteMapping(path = "/{medicalRecordID}")
 	public ResponseEntity<ResponseSuccess> deleteMedicalRecord(@PathVariable int medicalRecordID) {
 		medicalRecordService.deleteMedicalRecord(medicalRecordID);
-		return new ResponseEntity<>(new ResponseSuccess("MedicalRecord deleted", true), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ResponseSuccess("MedicalRecord deleted", true), HttpStatus.OK);
 
 	}
 

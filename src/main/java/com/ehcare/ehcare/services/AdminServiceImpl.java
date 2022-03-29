@@ -45,7 +45,10 @@ public class AdminServiceImpl implements AdminService {
 			throw new UserNotFoundException();
 		Admin adminToUpdate = adminToGet.get();
 		adminToUpdate.setAdminEmail(admin.getAdminEmail());
-		adminToUpdate.setPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
+		if(admin.getPassword()!=null)
+			adminToUpdate.setPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
+		else
+			adminToUpdate.setPassword(adminToUpdate.getPassword());
 		adminToUpdate.setAdminName(admin.getAdminName());
 		adminToUpdate.setAdminContact(admin.getAdminContact());
 		return adminRepository.save(adminToUpdate);

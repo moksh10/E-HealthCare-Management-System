@@ -32,7 +32,6 @@ public class Admin {
 	private String adminEmail;
 	
 	@Column(name="password")
-	@NotEmpty(message = "Password required")
 	@Size(min=8,message = "Password must be minimum of 8 characters")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;

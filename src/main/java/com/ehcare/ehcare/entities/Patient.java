@@ -41,7 +41,6 @@ public class Patient {
 	private String patientEmail;
 	
 	@Column(name="password")
-	@NotEmpty(message = "Password required")
 	@Size(min=8,message = "Password must be minimum of 8 characters")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
@@ -67,7 +66,6 @@ public class Patient {
 	private String patientGender;
 	
 	@Column(name="patient_age")
-	@NotEmpty(message = "Patient age cannot be empty")
 	@Min(value=1,message = "Patient age invalid")
 	private int patientAge;
 	

@@ -48,19 +48,17 @@ public class AppointmentController {
 		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched", true, appointments), HttpStatus.OK);
 	}
 
-	@PostMapping("/{doctorID}")
-	public ResponseEntity<ResponseSuccess> saveAppointment(@PathVariable int doctorID,
-			@Valid @RequestBody Appointment appointment, HttpServletRequest request) {
-		int patientID = (int) request.getAttribute("patientID");
+	@PostMapping("/{doctorID}/{patientID}")
+	public ResponseEntity<ResponseSuccess> saveAppointment(@PathVariable("patientID") int patientID,
+			@PathVariable int doctorID, @Valid @RequestBody Appointment appointment, HttpServletRequest request) {
+//		int patientID = (int) request.getAttribute("patientID");
 		appointmentService.saveAppointment(patientID, doctorID, appointment);
-		return new ResponseEntity<>(new ResponseSuccess("Appointment created", true), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseSuccess("Appointment created", true, appointment), HttpStatus.CREATED);
 	}
 
 	@PutMapping
 	public ResponseEntity<ResponseSuccess> updateAppointment(HttpServletRequest request,
 			@Valid @RequestBody Appointment appointment) {
-		int appointmentID = (int) request.getAttribute("appointmentID");
-		appointment.setAppointmentID(appointmentID);
 		Appointment updatedAppointment = appointmentService.updateAppointment(appointment.getAppointmentID(),
 				appointment);
 		return new ResponseEntity<>(new ResponseSuccess("Appointment updated", true, updatedAppointment),
@@ -71,14 +69,14 @@ public class AppointmentController {
 	@DeleteMapping(path = "/{appointmentID}")
 	public ResponseEntity<ResponseSuccess> deleteAppointment(@PathVariable int appointmentID) {
 		appointmentService.deleteAppointment(appointmentID);
-		return new ResponseEntity<>(new ResponseSuccess("Appointment deleted", true), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ResponseSuccess("Appointment deleted", true), HttpStatus.OK);
 
 	}
 
 	@DeleteMapping(path = "/doctor/{doctorID}")
 	public ResponseEntity<ResponseSuccess> deleteAppointmentsByDoctor(@PathVariable int doctorID) {
 		appointmentService.deleteAppointmentByDoctor(doctorID);
-		return new ResponseEntity<>(new ResponseSuccess("Appointment deleted", true), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ResponseSuccess("Appointments deleted", true), HttpStatus.OK);
 
 	}
 

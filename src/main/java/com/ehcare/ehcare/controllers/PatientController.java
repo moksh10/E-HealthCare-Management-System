@@ -44,14 +44,14 @@ public class PatientController {
 	public ResponseEntity<ResponseSuccess> savePatient(@Valid @RequestBody Patient patient) {
 
 		patientService.savePatient(patient);
-		return new ResponseEntity<>(new ResponseSuccess("Patient created", true), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseSuccess("Patient created", true, patient), HttpStatus.CREATED);
 	}
 
 	@PutMapping
 	public ResponseEntity<ResponseSuccess> updatePatient(HttpServletRequest request,
 			@Valid @RequestBody Patient patient) {
-		int patientID = (int) request.getAttribute("patientID");
-		patient.setPatientID(patientID);
+//		int patientID = (int) request.getAttribute("patientID");
+//		patient.setPatientID(patientID);
 		Patient updatedPatient = patientService.updatePatient(patient.getPatientID(), patient);
 		return new ResponseEntity<>(new ResponseSuccess("Patient updated", true, updatedPatient), HttpStatus.OK);
 
@@ -60,7 +60,7 @@ public class PatientController {
 	@DeleteMapping(path = "/{patientID}")
 	public ResponseEntity<ResponseSuccess> deletePatient(@PathVariable int patientID, HttpServletRequest request) {
 		patientService.deletePatient(patientID);
-		return new ResponseEntity<>(new ResponseSuccess("Patient deleted", true), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ResponseSuccess("Patient deleted", true), HttpStatus.OK);
 
 	}
 

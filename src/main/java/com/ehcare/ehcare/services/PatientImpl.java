@@ -43,7 +43,10 @@ public class PatientImpl implements PatientService {
 			throw new UserNotFoundException();
 		Patient patientToUpdate = patientToGet.get();
 		patientToUpdate.setPatientEmail(patient.getPatientEmail());
-		patientToUpdate.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
+		if(patient.getPassword()!=null)
+			patientToUpdate.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
+		else
+			patientToUpdate.setPassword(patientToUpdate.getPassword());
 		patientToUpdate.setPatientName(patient.getPatientName());
 		patientToUpdate.setPatientContact(patient.getPatientContact());
 		patientToUpdate.setPatientAddress(patient.getPatientAddress());

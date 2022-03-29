@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="appointment")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","patient","doctor"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,6 @@ public class Appointment {
 	
 	
 	@Column(name="appointment_date")
-	@NotEmpty(message = "Appointment date required")
 	private Date appointmentDate;
 	
 	
