@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.ehcare.ehcare.dto.APIError;
 import com.ehcare.ehcare.handlers.AppointmentNotFoundException;
+import com.ehcare.ehcare.handlers.AuthorizationException;
 import com.ehcare.ehcare.handlers.MedicalRecordNotFound;
 import com.ehcare.ehcare.handlers.UserAlreadyExistsException;
 import com.ehcare.ehcare.handlers.UserNotFoundException;
@@ -38,39 +41,39 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(apiError,HttpStatus.BAD_REQUEST);
 		
 	}
-//	@ExceptionHandler(UsernameNotFoundException.class)
-//	public ResponseEntity<?> userNotFound(UsernameNotFoundException usernameNotFoundException,WebRequest webRequest)
-//	{
-//		APIError apiError=new APIError();
-//		apiError.setMessage(usernameNotFoundException.getMessage());
-//		apiError.setStatus(400);
-//		apiError.setTimestamp(Timestamp.from(Instant.now()));
-//		apiError.setError("Bad Request");
-//		return new ResponseEntity<>(apiError,HttpStatus.BAD_REQUEST);
-//		
-//	}
-//	@ExceptionHandler(BadCredentialsException.class)
-//	public ResponseEntity<?> authenticationException(BadCredentialsException badCredentialsException,WebRequest webRequest)
-//	{
-//		APIError apiError=new APIError();
-//		apiError.setMessage(badCredentialsException.getMessage());
-//		apiError.setStatus(401);
-//		apiError.setTimestamp(Timestamp.from(Instant.now()));
-//		apiError.setError("Bad Credentials");
-//		return new ResponseEntity<>(apiError,HttpStatus.UNAUTHORIZED);
-//		
-//	}
-//	@ExceptionHandler(AuthorizationException.class)
-//	public ResponseEntity<?> authorizationException(AuthorizationException authorizationException,WebRequest webRequest)
-//	{
-//		APIError apiError=new APIError();
-//		apiError.setMessage(authorizationException.getMessage());
-//		apiError.setStatus(401);
-//		apiError.setTimestamp(Timestamp.from(Instant.now()));
-//		apiError.setError("Unauthorized");
-//		return new ResponseEntity<>(apiError,HttpStatus.UNAUTHORIZED);
-//		
-//	}
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ResponseEntity<?> userNotFound(UsernameNotFoundException usernameNotFoundException,WebRequest webRequest)
+	{
+		APIError apiError=new APIError();
+		apiError.setMessage(usernameNotFoundException.getMessage());
+		apiError.setStatus(400);
+		apiError.setTimestamp(Timestamp.from(Instant.now()));
+		apiError.setError("Bad Request");
+		return new ResponseEntity<>(apiError,HttpStatus.BAD_REQUEST);
+		
+	}
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<?> authenticationException(BadCredentialsException badCredentialsException,WebRequest webRequest)
+	{
+		APIError apiError=new APIError();
+		apiError.setMessage(badCredentialsException.getMessage());
+		apiError.setStatus(401);
+		apiError.setTimestamp(Timestamp.from(Instant.now()));
+		apiError.setError("Bad Credentials");
+		return new ResponseEntity<>(apiError,HttpStatus.UNAUTHORIZED);
+		
+	}
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<?> authorizationException(AuthorizationException authorizationException,WebRequest webRequest)
+	{
+		APIError apiError=new APIError();
+		apiError.setMessage(authorizationException.getMessage());
+		apiError.setStatus(401);
+		apiError.setTimestamp(Timestamp.from(Instant.now()));
+		apiError.setError("Unauthorized");
+		return new ResponseEntity<>(apiError,HttpStatus.UNAUTHORIZED);
+		
+	}
 	
 	
 	@ExceptionHandler(UserNotFoundException.class)

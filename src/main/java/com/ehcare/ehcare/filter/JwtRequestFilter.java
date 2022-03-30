@@ -55,6 +55,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     	}
 
     	Cookie[] cookies= request.getCookies();
+    	
     	String authorization = null;
     	if(cookies!=null)
     	{

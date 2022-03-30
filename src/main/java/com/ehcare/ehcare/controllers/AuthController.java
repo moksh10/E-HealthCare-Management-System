@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -56,11 +57,12 @@ public class AuthController {
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
 
 		Cookie cookie = new Cookie("jwt", jwt);
-		cookie.setHttpOnly(true);
-		cookie.setSecure(true);
+		//cookie.setHttpOnly(true);
+		//cookie.setSecure(true);
 		cookie.setMaxAge(60*60*6);
 		response.addCookie(cookie);
 		return ResponseEntity.ok("Success");
+		//return new ResponseEntity<>(new ResponseSuccess("Success", true, jwt), HttpStatus.OK);
 	}
 	
 	@RequestMapping("/authFailure")
