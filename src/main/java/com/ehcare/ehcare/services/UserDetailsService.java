@@ -30,6 +30,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		Client client = new Client();
+		
 		String[] usernameWithRole = username.split("#");
 		username = usernameWithRole[0];
 		String role = usernameWithRole[1];
@@ -47,7 +48,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		if (role.equals("PATIENT")) {
 			Patient patient = patientRepository.findPatientByPatientEmail(username);
 			if (patient != null) {
-				client.setEmail(patient.getPatientEmail());
+				client.setEmail(patient.getPatientEmail()+"#"+role);
 				client.setPassword(patient.getPassword());
 				client.setRole("PATIENT");
 				CustomUserDetails userDetails = new CustomUserDetails(client);

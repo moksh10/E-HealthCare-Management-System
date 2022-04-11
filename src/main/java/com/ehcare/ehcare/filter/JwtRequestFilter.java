@@ -55,7 +55,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     	}
 
     	Cookie[] cookies= request.getCookies();
-    	
     	String authorization = null;
     	if(cookies!=null)
     	{
@@ -98,6 +97,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 String role="";
                 for(GrantedAuthority grantedAuthority:roles)
                 	role+=grantedAuthority.getAuthority();
+                username=username.split("#")[0];
                 if(role.equals("ADMIN"))
                 {
                 	int adminID=adminService.getAdminByAdminEmail(username).getAdminID();

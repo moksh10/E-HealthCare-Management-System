@@ -38,6 +38,7 @@ public class AuthController {
 	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthenticationRequest authenticationRequest,
 			HttpServletResponse response) throws Exception {
 
+		
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					authenticationRequest.getEmail() + "#" + authenticationRequest.getRole(),
