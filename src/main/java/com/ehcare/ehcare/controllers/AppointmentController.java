@@ -1,5 +1,6 @@
 package com.ehcare.ehcare.controllers;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ehcare.ehcare.dto.ResponseSuccess;
 import com.ehcare.ehcare.entities.Appointment;
 import com.ehcare.ehcare.services.AppointmentService;
+import com.ehcare.ehcare.util.DateUtil;
 
 @RestController
 @RequestMapping(path = "/appointment")
@@ -27,6 +29,9 @@ public class AppointmentController {
 
 	@Autowired
 	AppointmentService appointmentService;
+
+	@Autowired
+	DateUtil dateUtil;
 
 	@GetMapping(path = "/{appointmentID}")
 	public ResponseEntity<ResponseSuccess> getAppointment(@PathVariable int appointmentID) {
@@ -41,10 +46,40 @@ public class AppointmentController {
 		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched", true, appointments), HttpStatus.OK);
 	}
 
+	@GetMapping(path = "/date/{date}")
+	public ResponseEntity<ResponseSuccess> getAppointmentsByAppointmentDate(@PathVariable("date") String date) {
+
+		Date tempDate = dateUtil.parse(date);
+		List<Appointment> appointments = appointmentService.getAllAppointmentsByAppointmentDate(tempDate);
+		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched", true, appointments), HttpStatus.OK);
+	}
+
 	@GetMapping(path = "/patient/{patientID}")
 	public ResponseEntity<ResponseSuccess> getAppointmentsByPatient(@PathVariable int patientID) {
 
 		List<Appointment> appointments = appointmentService.getAllAppointmentsByPatient(patientID);
+		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched", true, appointments), HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/patient/date/{date}")
+	public ResponseEntity<ResponseSuccess> getAppointmentByPatientAndAppointmentDate(HttpServletRequest request,
+			@PathVariable("date") String date) {
+
+		int patientID = (int) request.getAttribute("patientID");
+		Date tempDate = dateUtil.parse(date);
+		List<Appointment> appointments = appointmentService.getAllAppointmentsByPatientAndAppointmentDate(patientID,
+				tempDate);
+		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched", true, appointments), HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/doctor/date/{date}")
+	public ResponseEntity<ResponseSuccess> getAppointmentByDoctorAndAppointmentDate(HttpServletRequest request,
+			@PathVariable("date") String date) {
+
+		int doctorID = (int) request.getAttribute("doctorID");
+		Date tempDate = dateUtil.parse(date);
+		List<Appointment> appointments = appointmentService.getAllAppointmentsByDoctorAndAppointmentDate(doctorID,
+				tempDate);
 		return new ResponseEntity<>(new ResponseSuccess("Appointments fetched", true, appointments), HttpStatus.OK);
 	}
 
@@ -78,6 +113,14 @@ public class AppointmentController {
 		appointmentService.deleteAppointmentByDoctor(doctorID);
 		return new ResponseEntity<>(new ResponseSuccess("Appointments deleted", true), HttpStatus.OK);
 
+	}
+
+	@DeleteMapping(path = "/date/{date}")
+	public ResponseEntity<ResponseSuccess> deleteAppointmentsByDoctor(@PathVariable("date") String date) {
+
+		Date tempDate = dateUtil.parse(date);
+		appointmentService.deleteAppointmentsByAppointmentDate(tempDate);
+		return new ResponseEntity<>(new ResponseSuccess("Appointments deleted", true), HttpStatus.OK);
 	}
 
 }

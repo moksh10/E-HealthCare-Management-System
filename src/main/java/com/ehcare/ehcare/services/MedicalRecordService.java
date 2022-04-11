@@ -14,4 +14,5 @@ public interface MedicalRecordService {
 	public List<MedicalRecord> getAllMedicalRecordsByPatient(int patientID);
 	public List<MedicalRecord> getAllMedicalRecordsByDoctor(int doctorID);
 	public List<MedicalRecord> getAllMedicalRecordsByMedicalRecordDate(Date date);
+	public List<MedicalRecord> getAllMedicalRecordsByPatientAndDoctor(int patientID,int doctorID);
 }

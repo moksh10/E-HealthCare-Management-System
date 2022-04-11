@@ -1,5 +1,6 @@
 package com.ehcare.ehcare.services;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,5 +104,37 @@ public class AppointmentServiceImpl implements AppointmentService {
 			throw new UserNotFoundException();
 		appointmentRepository.deleteAppointmentsByDoctor(doctor.get());
 
+	}
+
+	@Override
+	public List<Appointment> getAllAppointmentsByDoctorAndAppointmentDate(int doctorID, Date appointmentDate) {
+		// TODO Auto-generated method stub
+		Optional<Doctor> doctor = doctorRepository.findById(doctorID);
+		if (!doctor.isPresent())
+			throw new UserNotFoundException();
+		return appointmentRepository.findAppointmentsByDoctorAndAppointmentDate(doctor.get(), appointmentDate);
+	}
+
+	@Override
+	public List<Appointment> getAllAppointmentsByPatientAndAppointmentDate(int patientID, Date appointmentDate) {
+		// TODO Auto-generated method stub
+		Optional<Patient> patient = patientRepository.findById(patientID);
+		if (!patient.isPresent())
+			throw new UserNotFoundException();
+		return appointmentRepository.findAppointmentsByPatientAndAppointmentDate(patient.get(), appointmentDate);
+	
+	}
+
+	@Override
+	public void deleteAppointmentsByAppointmentDate(Date appointmentDate) {
+		// TODO Auto-generated method stub
+		appointmentRepository.deleteAppointmentsByAppointmentDate(appointmentDate);
+		
+	}
+
+	@Override
+	public List<Appointment> getAllAppointmentsByAppointmentDate(Date appointmentDate) {
+		// TODO Auto-generated method stub
+		return appointmentRepository.findAppointmentsByAppointmentDate(appointmentDate);
 	}
 }

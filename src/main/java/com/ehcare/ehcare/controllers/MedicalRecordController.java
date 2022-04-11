@@ -61,6 +61,16 @@ public class MedicalRecordController {
 		return new ResponseEntity<>(new ResponseSuccess("MedicalRecords fetched", true, medicalRecords), HttpStatus.OK);
 	}
 
+	@GetMapping(path = "/doctor/patient/{patientID}")
+	public ResponseEntity<ResponseSuccess> getMedicalRecordsByPatientAndDoctor(HttpServletRequest request,
+			@PathVariable int patientID) {
+
+		int doctorID = (int) request.getAttribute("doctorID");
+		List<MedicalRecord> medicalRecords = medicalRecordService.getAllMedicalRecordsByPatientAndDoctor(patientID,
+				doctorID);
+		return new ResponseEntity<>(new ResponseSuccess("MedicalRecords fetched", true, medicalRecords), HttpStatus.OK);
+	}
+
 	@PostMapping("/{patientID}")
 	public ResponseEntity<ResponseSuccess> saveMedicalRecord(@PathVariable int patientID,
 			@Valid @RequestBody MedicalRecord medicalRecord, HttpServletRequest request) {

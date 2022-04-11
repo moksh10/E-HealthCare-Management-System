@@ -11,10 +11,14 @@ import com.ehcare.ehcare.entities.MedicalRecord;
 import com.ehcare.ehcare.entities.Patient;
 
 @Repository
-public interface MedicalRecordRepository extends CrudRepository<MedicalRecord, Integer>{
+public interface MedicalRecordRepository extends CrudRepository<MedicalRecord, Integer> {
 
 	List<MedicalRecord> findMedicalRecordsByPatient(Patient patient);
+
 	List<MedicalRecord> findMedicalRecordsByDoctor(Doctor doctor);
+
 	List<MedicalRecord> findMedicalRecordsByMedicalRecordDate(Date date);
+
+	List<MedicalRecord> findMedicalRecordsByPatientAndDoctor(Patient patient, Doctor doctor);
 
 }

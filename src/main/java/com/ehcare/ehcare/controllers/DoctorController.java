@@ -49,8 +49,6 @@ public class DoctorController {
 
 	@PutMapping
 	public ResponseEntity<ResponseSuccess> updateDoctor(HttpServletRequest request, @Valid @RequestBody Doctor doctor) {
-		int doctorID = (int) request.getAttribute("doctorID");
-		doctor.setDoctorID(doctorID);
 		Doctor updatedDoctor = doctorService.updateDoctor(doctor.getDoctorID(), doctor);
 		return new ResponseEntity<>(new ResponseSuccess("Doctor updated", true, updatedDoctor), HttpStatus.OK);
 

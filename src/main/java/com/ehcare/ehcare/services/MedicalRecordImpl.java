@@ -101,4 +101,16 @@ public class MedicalRecordImpl implements MedicalRecordService {
 		return medicalRecordRepository.findMedicalRecordsByMedicalRecordDate(date);
 	}
 
+	@Override
+	public List<MedicalRecord> getAllMedicalRecordsByPatientAndDoctor(int patientID, int doctorID) {
+		// TODO Auto-generated method stub
+		Optional<Patient> patient = patientRepository.findById(patientID);
+		if (!patient.isPresent())
+			throw new UserNotFoundException();
+		Optional<Doctor> doctor = doctorRepository.findById(doctorID);
+		if (!doctor.isPresent())
+			throw new UserNotFoundException();
+		return medicalRecordRepository.findMedicalRecordsByPatientAndDoctor(patient.get(), doctor.get());
+	}
+
 }
