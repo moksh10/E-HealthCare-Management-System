@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,7 +22,6 @@ import com.ehcare.ehcare.handlers.AuthorizationException;
 import com.ehcare.ehcare.services.UserDetailsService;
 import com.ehcare.ehcare.util.JwtUtil;
 
-
 @RestController
 public class AuthController {
 
@@ -36,47 +34,43 @@ public class AuthController {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	
-
 	@PostMapping("/auth")
-	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response ) throws Exception {
+	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthenticationRequest authenticationRequest,
+			HttpServletResponse response) throws Exception {
 
 		try {
-			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
-			);
-		}
-		catch (BadCredentialsException e) {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					authenticationRequest.getEmail() + "#" + authenticationRequest.getRole(),
+					authenticationRequest.getPassword()));
+		} catch (BadCredentialsException e) {
 			throw new BadCredentialsException("Incorrect email or password");
 		}
 
-
 		final UserDetails userDetails = userDetailsService
-				.loadUserByUsername(authenticationRequest.getEmail());
+				.loadUserByUsername(authenticationRequest.getEmail() + "#" + authenticationRequest.getRole());
 
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
 
 		Cookie cookie = new Cookie("jwt", jwt);
-		//cookie.setHttpOnly(true);
-		//cookie.setSecure(true);
-		cookie.setMaxAge(60*60*6);
+		// cookie.setHttpOnly(true);
+		// cookie.setSecure(true);
+		cookie.setMaxAge(60 * 60 * 6);
 		response.addCookie(cookie);
 		return ResponseEntity.ok("Success");
-		//return new ResponseEntity<>(new ResponseSuccess("Success", true, jwt), HttpStatus.OK);
 	}
-	
+
 	@RequestMapping("/authFailure")
 	public void authFailure() {
 
 		throw new AuthorizationException();
 	}
-	
+
 	@GetMapping("/isAuth")
 	public ResponseEntity<?> isAuth() {
 
 		return ResponseEntity.ok(new ResponseSuccess("Authorized", true));
 	}
-	
+
 	@PostMapping("/logoutUser")
 	public ResponseEntity<?> logout(HttpServletResponse response) {
 

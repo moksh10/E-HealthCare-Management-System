@@ -1,6 +1,5 @@
 package com.ehcare.ehcare.services;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,40 +28,45 @@ public class UserDetailsService implements org.springframework.security.core.use
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
 
 		Client client = new Client();
-		Admin admin=adminRepository.findAdminByAdminEmail(username);
-		if(admin!=null)
-		{
-			client.setEmail(admin.getAdminEmail());
-			client.setPassword(admin.getPassword());
-			client.setRole("ADMIN");
-			CustomUserDetails userDetails = new CustomUserDetails(client);
-			return userDetails;
+		String[] usernameWithRole = username.split("#");
+		username = usernameWithRole[0];
+		String role = usernameWithRole[1];
+		if (role.equals("ADMIN")) {
+			Admin admin = adminRepository.findAdminByAdminEmail(username);
+			if (admin != null) {
+				client.setEmail(admin.getAdminEmail());
+				client.setPassword(admin.getPassword());
+				client.setRole("ADMIN");
+				CustomUserDetails userDetails = new CustomUserDetails(client);
+				return userDetails;
+			}
+			throw new UsernameNotFoundException(username);
 		}
-		admin=null;
-		Patient patient =patientRepository.findPatientByPatientEmail(username);
-		if(patient!=null)
-		{
-			client.setEmail(patient.getPatientEmail());
-			client.setPassword(patient.getPassword());
-			client.setRole("PATIENT");
-			CustomUserDetails userDetails = new CustomUserDetails(client);
-			return userDetails;
+		if (role.equals("PATIENT")) {
+			Patient patient = patientRepository.findPatientByPatientEmail(username);
+			if (patient != null) {
+				client.setEmail(patient.getPatientEmail());
+				client.setPassword(patient.getPassword());
+				client.setRole("PATIENT");
+				CustomUserDetails userDetails = new CustomUserDetails(client);
+				return userDetails;
+			}
+			throw new UsernameNotFoundException(username);
 		}
-		patient=null;
-		Doctor doctor=doctorRepository.findDoctorByDoctorEmail(username);
-		if(doctor!=null)
-		{
-			client.setEmail(doctor.getDoctorEmail());
-			client.setPassword(doctor.getPassword());
-			client.setRole("DOCTOR");
-			CustomUserDetails userDetails = new CustomUserDetails(client);
-			return userDetails;
+		if (role.equals("DOCTOR")) {
+			Doctor doctor = doctorRepository.findDoctorByDoctorEmail(username);
+			if (doctor != null) {
+				client.setEmail(doctor.getDoctorEmail());
+				client.setPassword(doctor.getPassword());
+				client.setRole("DOCTOR");
+				CustomUserDetails userDetails = new CustomUserDetails(client);
+				return userDetails;
+			}
+			throw new UsernameNotFoundException(username);
 		}
 		throw new UsernameNotFoundException(username);
-		
 	}
 
 }
