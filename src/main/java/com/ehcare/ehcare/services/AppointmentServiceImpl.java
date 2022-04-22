@@ -126,6 +126,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteAppointmentsByAppointmentDate(Date appointmentDate) {
 		// TODO Auto-generated method stub
 		appointmentRepository.deleteAppointmentsByAppointmentDate(appointmentDate);

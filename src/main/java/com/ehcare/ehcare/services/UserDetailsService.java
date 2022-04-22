@@ -37,7 +37,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		if (role.equals("ADMIN")) {
 			Admin admin = adminRepository.findAdminByAdminEmail(username);
 			if (admin != null) {
-				client.setEmail(admin.getAdminEmail());
+				client.setEmail(admin.getAdminEmail()+"#"+role);
 				client.setPassword(admin.getPassword());
 				client.setRole("ADMIN");
 				CustomUserDetails userDetails = new CustomUserDetails(client);
@@ -59,7 +59,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		if (role.equals("DOCTOR")) {
 			Doctor doctor = doctorRepository.findDoctorByDoctorEmail(username);
 			if (doctor != null) {
-				client.setEmail(doctor.getDoctorEmail());
+				client.setEmail(doctor.getDoctorEmail()+"#"+role);
 				client.setPassword(doctor.getPassword());
 				client.setRole("DOCTOR");
 				CustomUserDetails userDetails = new CustomUserDetails(client);

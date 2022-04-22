@@ -43,30 +43,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity security) throws Exception {
 		
-		security.cors().and().csrf().disable().authorizeRequests()
-    	.antMatchers("/authFailure").permitAll()
-    	.antMatchers(HttpMethod.POST,"/auth").permitAll()
-    	.antMatchers(HttpMethod.POST,"/patient").permitAll()
-    	.antMatchers(HttpMethod.GET,"/doctor/**").permitAll()
-    	.antMatchers(HttpMethod.POST,"/appointment/**").hasAnyAuthority("ADMIN","PATIENT")
-    	.antMatchers("/appointment/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
-    	.antMatchers(HttpMethod.GET,"/medicalRecord/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
-    	.antMatchers("/medicalRecord/**").hasAnyAuthority("ADMIN","DOCTOR")
-    	.antMatchers(HttpMethod.GET,"/doctor/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
-    	.antMatchers("/doctor/**").hasAnyAuthority("ADMIN","DOCTOR")
-    	.antMatchers(HttpMethod.GET,"/patient/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
-    	.antMatchers("/patient/**").hasAnyAuthority("ADMIN","PATIENT")
-    	.antMatchers("/admin/**").hasAuthority("ADMIN")
-    	.antMatchers("/isAuth").authenticated()
-    	.antMatchers("/logoutUser").authenticated()
-    	.and().formLogin().and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    	security.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-    	security.exceptionHandling()
-        .authenticationEntryPoint(
-            (request, response, ex) -> {
-                response.sendRedirect("/authFailure");
-            }
-        );
+		security.authorizeHttpRequests().anyRequest().permitAll();
+		security.csrf().disable();
+//		security.cors().and().csrf().disable().authorizeRequests()
+//    	.antMatchers("/authFailure").permitAll()
+//    	.antMatchers(HttpMethod.POST,"/auth").permitAll()
+//    	.antMatchers(HttpMethod.POST,"/patient").permitAll()
+//    	.antMatchers(HttpMethod.GET,"/doctor/**").permitAll()
+//    	.antMatchers(HttpMethod.POST,"/appointment/**").hasAnyAuthority("ADMIN","PATIENT")
+//    	.antMatchers("/appointment/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
+//    	.antMatchers(HttpMethod.GET,"/medicalRecord/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
+//    	.antMatchers("/medicalRecord/**").hasAnyAuthority("ADMIN","DOCTOR")
+//    	.antMatchers(HttpMethod.GET,"/doctor/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
+//    	.antMatchers("/doctor/**").hasAnyAuthority("ADMIN","DOCTOR")
+//    	.antMatchers(HttpMethod.GET,"/patient/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
+//    	.antMatchers("/patient/**").hasAnyAuthority("ADMIN","PATIENT")
+//    	.antMatchers("/admin/**").hasAuthority("ADMIN")
+//		.antMatchers("/userInfo").authenticated()
+//    	.antMatchers("/isAuth").authenticated()
+//    	.antMatchers("/logoutUser").authenticated()
+//    	.and().formLogin().and()
+//        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//    	security.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//    	security.exceptionHandling()
+//        .authenticationEntryPoint(
+//            (request, response, ex) -> {
+//                response.sendRedirect("/authFailure");
+//            }
+//        );
 	}
 }

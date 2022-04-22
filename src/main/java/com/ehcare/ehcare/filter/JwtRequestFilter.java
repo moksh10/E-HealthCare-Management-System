@@ -1,6 +1,5 @@
 package com.ehcare.ehcare.filter;
 
-
 import java.io.IOException;
 import java.util.Collection;
 
@@ -29,103 +28,95 @@ import com.ehcare.ehcare.util.JwtUtil;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-    
-    @Autowired
-    private AdminService adminService;
-    
-    @Autowired
-    private PatientService patientService;
-    
-    @Autowired
-    private DoctorService doctorService;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+	@Autowired
+	private AdminService adminService;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
-    	
-    	if(request.getRequestURI().toString().equals("/authFailure"))
-    	{
-    		chain.doFilter(request, response);
-    		return;
-    	}
+	@Autowired
+	private PatientService patientService;
 
-    	Cookie[] cookies= request.getCookies();
-    	String authorization = null;
-    	if(cookies!=null)
-    	{
-    		for(Cookie cookie:cookies)
-        	{
-        		if(cookie.getName().equals("jwt"))
-        		{
-        			authorization=cookie.getValue();
-        		}
-        	}
-    	}
-    	
-        
-        String username = null;
-        String jwt = null;
+	@Autowired
+	private DoctorService doctorService;
 
-        if (authorization != null ) {
-            jwt = authorization;
-            try {
-            	username = jwtUtil.extractUsername(jwt);
-                
+	@Autowired
+	private JwtUtil jwtUtil;
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws ServletException, IOException {
+
+		if (request.getRequestURI().toString().equals("/authFailure")) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		Cookie[] cookies = request.getCookies();
+		String authorization = null;
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("jwt")) {
+					authorization = cookie.getValue();
+				}
+			}
+		}
+
+		String username = null;
+		String jwt = null;
+
+		if (authorization != null) {
+			jwt = authorization;
+			try {
+				username = jwtUtil.extractUsername(jwt);
+
 			} catch (Exception e) {
 			}
-        }
+		}
 
+		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            
+			if (jwtUtil.validateToken(jwt, userDetails)) {
 
-            if (jwtUtil.validateToken(jwt, userDetails)) {
+				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+						userDetails, null, userDetails.getAuthorities());
+				usernamePasswordAuthenticationToken
+						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+				Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
+				String role = "";
+				for (GrantedAuthority grantedAuthority : roles)
+					role += grantedAuthority.getAuthority();
+				username = username.split("#")[0];
+				if (role.equals("ADMIN")) {
+					int adminID = adminService.getAdminByAdminEmail(username).getAdminID();
+					request.setAttribute("adminID", adminID);
+					request.setAttribute("userID", adminID);
+					request.setAttribute("role", "admin");
 
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
-                String role="";
-                for(GrantedAuthority grantedAuthority:roles)
-                	role+=grantedAuthority.getAuthority();
-                username=username.split("#")[0];
-                if(role.equals("ADMIN"))
-                {
-                	int adminID=adminService.getAdminByAdminEmail(username).getAdminID();
-                    request.setAttribute("adminID",adminID);
-                	
-                }
-                else if(role.equals("DOCTOR"))
-                {
-                	int doctorID=doctorService.getDoctorByDoctorEmail(username).getDoctorID();
-                    request.setAttribute("doctorID",doctorID);
-                
-                }
-                else if(role.equals("PATIENT"))
-                {
-                	int patientID=patientService.getPatientByPatientEmail(username).getPatientID();
-                    request.setAttribute("patientID",patientID);
-                
-                }
-                
-            }
-            else {
-            	throw new AuthorizationException();
-    		}
-            
-            
-        }
-        
-        chain.doFilter(request, response);
-    }
+				} else if (role.equals("DOCTOR")) {
+					int doctorID = doctorService.getDoctorByDoctorEmail(username).getDoctorID();
+					request.setAttribute("doctorID", doctorID);
+					request.setAttribute("userID", doctorID);
+					request.setAttribute("role", "doctor");
+
+				} else if (role.equals("PATIENT")) {
+					int patientID = patientService.getPatientByPatientEmail(username).getPatientID();
+					request.setAttribute("patientID", patientID);
+					request.setAttribute("userID", patientID);
+					request.setAttribute("role", "patient");
+
+				}
+
+			} else {
+				throw new AuthorizationException();
+			}
+
+		}
+
+		chain.doFilter(request, response);
+	}
 
 }

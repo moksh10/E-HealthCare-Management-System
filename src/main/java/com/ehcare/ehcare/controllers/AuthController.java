@@ -1,15 +1,18 @@
 package com.ehcare.ehcare.controllers;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +24,10 @@ import com.ehcare.ehcare.dto.ResponseSuccess;
 import com.ehcare.ehcare.handlers.AuthorizationException;
 import com.ehcare.ehcare.services.UserDetailsService;
 import com.ehcare.ehcare.util.JwtUtil;
+import com.ehcare.ehcare.util.UserInfo;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
 	@Autowired
@@ -38,7 +43,6 @@ public class AuthController {
 	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthenticationRequest authenticationRequest,
 			HttpServletResponse response) throws Exception {
 
-		
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					authenticationRequest.getEmail() + "#" + authenticationRequest.getRole(),
@@ -57,13 +61,21 @@ public class AuthController {
 		// cookie.setSecure(true);
 		cookie.setMaxAge(60 * 60 * 6);
 		response.addCookie(cookie);
-		return ResponseEntity.ok("Success");
+		return new ResponseEntity<>("Success", HttpStatus.OK);
 	}
 
 	@RequestMapping("/authFailure")
 	public void authFailure() {
 
 		throw new AuthorizationException();
+	}
+
+	@GetMapping("/userInfo")
+	public ResponseEntity<?> userInfo(HttpServletRequest request) {
+
+		int userID = (int) request.getAttribute("userID");
+		String role = (String) request.getAttribute("role");
+		return ResponseEntity.ok(new ResponseSuccess("User fetched", true, new UserInfo(userID, role)));
 	}
 
 	@GetMapping("/isAuth")
