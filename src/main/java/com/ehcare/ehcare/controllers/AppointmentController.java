@@ -26,7 +26,7 @@ import com.ehcare.ehcare.util.DateUtil;
 
 @RestController
 @RequestMapping(path = "/appointment")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
 public class AppointmentController {
 
 	@Autowired

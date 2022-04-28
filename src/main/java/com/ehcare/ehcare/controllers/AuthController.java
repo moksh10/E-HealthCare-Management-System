@@ -27,7 +27,7 @@ import com.ehcare.ehcare.util.JwtUtil;
 import com.ehcare.ehcare.util.UserInfo;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
 
 	@Autowired
@@ -57,11 +57,11 @@ public class AuthController {
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
 
 		Cookie cookie = new Cookie("jwt", jwt);
-		// cookie.setHttpOnly(true);
-		// cookie.setSecure(true);
+		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
 		cookie.setMaxAge(60 * 60 * 6);
 		response.addCookie(cookie);
-		return new ResponseEntity<>("Success", HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseSuccess("Logged In", true), HttpStatus.OK);
 	}
 
 	@RequestMapping("/authFailure")
@@ -75,7 +75,8 @@ public class AuthController {
 
 		int userID = (int) request.getAttribute("userID");
 		String role = (String) request.getAttribute("role");
-		return ResponseEntity.ok(new ResponseSuccess("User fetched", true, new UserInfo(userID, role)));
+		String username = (String) request.getAttribute("username");
+		return ResponseEntity.ok(new ResponseSuccess("User fetched", true, new UserInfo(userID, role, username)));
 	}
 
 	@GetMapping("/isAuth")

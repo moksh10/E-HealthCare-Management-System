@@ -18,6 +18,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.ehcare.ehcare.entities.Admin;
+import com.ehcare.ehcare.entities.Doctor;
+import com.ehcare.ehcare.entities.Patient;
 import com.ehcare.ehcare.handlers.AuthorizationException;
 import com.ehcare.ehcare.services.AdminService;
 import com.ehcare.ehcare.services.DoctorService;
@@ -91,22 +94,32 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 					role += grantedAuthority.getAuthority();
 				username = username.split("#")[0];
 				if (role.equals("ADMIN")) {
-					int adminID = adminService.getAdminByAdminEmail(username).getAdminID();
+					Admin admin= adminService.getAdminByAdminEmail(username);
+					int adminID = admin.getAdminID();
+					String userName = admin.getAdminName();
 					request.setAttribute("adminID", adminID);
 					request.setAttribute("userID", adminID);
 					request.setAttribute("role", "admin");
+					request.setAttribute("username", userName);
+				
 
 				} else if (role.equals("DOCTOR")) {
-					int doctorID = doctorService.getDoctorByDoctorEmail(username).getDoctorID();
+					Doctor doctor=doctorService.getDoctorByDoctorEmail(username);
+					int doctorID = doctor.getDoctorID();
+					String userName=doctor.getDoctorName();
 					request.setAttribute("doctorID", doctorID);
 					request.setAttribute("userID", doctorID);
 					request.setAttribute("role", "doctor");
+					request.setAttribute("username", userName);
 
 				} else if (role.equals("PATIENT")) {
-					int patientID = patientService.getPatientByPatientEmail(username).getPatientID();
+					Patient patient=patientService.getPatientByPatientEmail(username);
+					int patientID = patient.getPatientID();
+					String userName=patient.getPatientName();
 					request.setAttribute("patientID", patientID);
 					request.setAttribute("userID", patientID);
 					request.setAttribute("role", "patient");
+					request.setAttribute("username", userName);
 
 				}
 

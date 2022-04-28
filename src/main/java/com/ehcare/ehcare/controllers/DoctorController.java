@@ -24,7 +24,7 @@ import com.ehcare.ehcare.services.DoctorService;
 
 @RestController
 @RequestMapping(path = "/doctor")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
 public class DoctorController {
 
 	@Autowired
