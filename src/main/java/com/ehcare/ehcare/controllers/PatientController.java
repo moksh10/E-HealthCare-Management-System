@@ -21,11 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ehcare.ehcare.dto.ResponseSuccess;
 import com.ehcare.ehcare.entities.Patient;
 import com.ehcare.ehcare.services.PatientService;
+import com.ehcare.ehcare.services.MailService;
+import com.ehcare.ehcare.entities.Mail;
 
 @RestController
 @RequestMapping(path = "/patient")
 @CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
 public class PatientController {
+
+	
+
+	@Autowired
+	private MailService mailService;
 
 	@Autowired
 	PatientService patientService;
@@ -46,6 +53,13 @@ public class PatientController {
 	public ResponseEntity<ResponseSuccess> savePatient(@Valid @RequestBody Patient patient) {
 
 		patientService.savePatient(patient);
+		Mail mail = new Mail();
+		String patientEmail=patient.getPatientEmail();
+		mail.setMailFrom("Zencare");
+		mail.setMailTo(patientEmail);
+		mail.setMailSubject("Welcome " + patient.getPatientName());
+		mail.setMailContent("Welcome " + patient.getPatientName() + " To Zencare, thanks for signing up, you are now ready to login and use our website freely.");
+		this.mailService.sendMail(mail);
 		return new ResponseEntity<>(new ResponseSuccess("Patient created", true, patient), HttpStatus.CREATED);
 	}
 
