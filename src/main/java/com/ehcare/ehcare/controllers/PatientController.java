@@ -21,18 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ehcare.ehcare.dto.ResponseSuccess;
 import com.ehcare.ehcare.entities.Patient;
 import com.ehcare.ehcare.services.PatientService;
-import com.ehcare.ehcare.services.MailService;
-import com.ehcare.ehcare.entities.Mail;
+//import com.ehcare.ehcare.services.MailService;
+//import com.ehcare.ehcare.entities.Mail;
 
 @RestController
 @RequestMapping(path = "/patient")
-@CrossOrigin(origins = "https://the12thplayer-wvehgh.firebaseapp.com/",allowCredentials = "true")
+@CrossOrigin(origins = "*",allowCredentials = "true")
 public class PatientController {
 
 	
 
-	@Autowired
-	private MailService mailService;
+//	@Autowired
+//	private MailService mailService;
 
 	@Autowired
 	PatientService patientService;
