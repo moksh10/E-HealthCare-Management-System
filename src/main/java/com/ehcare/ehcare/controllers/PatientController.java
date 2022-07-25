@@ -53,13 +53,13 @@ public class PatientController {
 	public ResponseEntity<ResponseSuccess> savePatient(@Valid @RequestBody Patient patient) {
 
 		patientService.savePatient(patient);
-		Mail mail = new Mail();
-		String patientEmail=patient.getPatientEmail();
-		mail.setMailFrom("Zencare");
-		mail.setMailTo(patientEmail);
-		mail.setMailSubject("Welcome " + patient.getPatientName());
-		mail.setMailContent("Welcome " + patient.getPatientName() + " To Zencare, thanks for signing up, you are now ready to login and use our website freely.");
-		this.mailService.sendMail(mail);
+//		Mail mail = new Mail();
+//		String patientEmail=patient.getPatientEmail();
+//		mail.setMailFrom("Zencare");
+//		mail.setMailTo(patientEmail);
+//		mail.setMailSubject("Welcome " + patient.getPatientName());
+//		mail.setMailContent("Welcome " + patient.getPatientName() + " To Zencare, thanks for signing up, you are now ready to login and use our website freely.");
+//		this.mailService.sendMail(mail);
 		return new ResponseEntity<>(new ResponseSuccess("Patient created", true, patient), HttpStatus.CREATED);
 	}
 
