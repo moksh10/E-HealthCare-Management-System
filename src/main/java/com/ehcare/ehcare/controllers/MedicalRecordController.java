@@ -26,7 +26,7 @@ import com.ehcare.ehcare.util.DateUtil;
 
 @RestController
 @RequestMapping(path = "/medicalRecord")
-@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
+@CrossOrigin(origins = "https://the12thplayer-wvehgh.firebaseapp.com/",allowCredentials = "true")
 public class MedicalRecordController {
 
 	@Autowired

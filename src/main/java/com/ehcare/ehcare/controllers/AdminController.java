@@ -24,7 +24,7 @@ import com.ehcare.ehcare.services.AdminService;
 
 @RestController
 @RequestMapping(path = "/admin")
-@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
+@CrossOrigin(origins = "https://the12thplayer-wvehgh.firebaseapp.com/",allowCredentials = "true")
 public class AdminController {
 
 	@Autowired

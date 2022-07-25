@@ -24,7 +24,7 @@ import com.ehcare.ehcare.services.DoctorService;
 
 @RestController
 @RequestMapping(path = "/doctor")
-@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
+@CrossOrigin(origins = "https://the12thplayer-wvehgh.firebaseapp.com/",allowCredentials = "true")
 public class DoctorController {
 
 	@Autowired

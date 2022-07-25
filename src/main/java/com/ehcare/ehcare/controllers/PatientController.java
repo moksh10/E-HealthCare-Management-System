@@ -26,7 +26,7 @@ import com.ehcare.ehcare.entities.Mail;
 
 @RestController
 @RequestMapping(path = "/patient")
-@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
+@CrossOrigin(origins = "https://the12thplayer-wvehgh.firebaseapp.com/",allowCredentials = "true")
 public class PatientController {
 
 	

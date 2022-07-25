@@ -27,7 +27,7 @@ import com.ehcare.ehcare.util.JwtUtil;
 import com.ehcare.ehcare.util.UserInfo;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "https://the12thplayer-wvehgh.firebaseapp.com/", allowCredentials = "true")
 public class AuthController {
 
 	@Autowired
