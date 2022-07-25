@@ -26,7 +26,7 @@ import com.ehcare.ehcare.services.PatientService;
 
 @RestController
 @RequestMapping(path = "/patient")
-@CrossOrigin(origins = "*",allowCredentials = "true")
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class PatientController {
 
 	
