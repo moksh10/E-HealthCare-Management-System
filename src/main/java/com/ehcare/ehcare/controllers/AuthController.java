@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -63,11 +64,10 @@ public class AuthController {
 		cookie.setHttpOnly(true);
 		cookie.setSecure(true);
 		cookie.setMaxAge(60 * 60 * 6);
-		response.setHeader("Access-Control-Allow-Headers",
-                "Date, Content-Type, Accept, X-Requested-With, Authorization, From, X-Auth-Token, Request-Id");
-response.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
-response.setHeader("Access-Control-Allow-Credentials", "true");
-		response.addCookie(cookie);
+//		ResponseCookie responseCookie=new ResponseCookie();
+//		responseCookie.
+	//	response.addCookie(cookie);
+		response.setHeader("Set-Cookie", "jwt="+jwt+"; HttpOnly; Secure; SameSite=none");
 		return new ResponseEntity<>(new ResponseSuccess("Logged In", true), HttpStatus.OK);
 	}
 
