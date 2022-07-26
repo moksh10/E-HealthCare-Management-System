@@ -95,7 +95,9 @@ public class AuthController {
 
 		Cookie cookie = new Cookie("jwt", "");
 		cookie.setMaxAge(0);
-		response.addCookie(cookie);
+		//response.addCookie(cookie);
+
+		response.setHeader("Set-Cookie", "jwt=no; HttpOnly; Secure; SameSite=none");
 		return ResponseEntity.ok(new ResponseSuccess("Logged Out", true));
 	}
 }
