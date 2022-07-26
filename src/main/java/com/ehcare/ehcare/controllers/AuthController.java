@@ -63,17 +63,10 @@ public class AuthController {
 		cookie.setHttpOnly(true);
 		cookie.setSecure(true);
 		cookie.setMaxAge(60 * 60 * 6);
-		 Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
-	        boolean firstHeader = true;
-	        for (String header : headers) { 
-	            if (firstHeader) {
-	                response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=None"));
-	                firstHeader = false;
-	                continue;
-	            }
-	            response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=None"));
-	        }
-
+		response.setHeader("Access-Control-Allow-Headers",
+                "Date, Content-Type, Accept, X-Requested-With, Authorization, From, X-Auth-Token, Request-Id");
+response.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
+response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.addCookie(cookie);
 		return new ResponseEntity<>(new ResponseSuccess("Logged In", true), HttpStatus.OK);
 	}
