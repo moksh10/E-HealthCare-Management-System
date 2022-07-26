@@ -1,11 +1,14 @@
 package com.ehcare.ehcare.controllers;
 
+import java.util.Collection;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -60,6 +63,17 @@ public class AuthController {
 		cookie.setHttpOnly(true);
 		cookie.setSecure(true);
 		cookie.setMaxAge(60 * 60 * 6);
+		 Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
+	        boolean firstHeader = true;
+	        for (String header : headers) { 
+	            if (firstHeader) {
+	                response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=None"));
+	                firstHeader = false;
+	                continue;
+	            }
+	            response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=None"));
+	        }
+
 		response.addCookie(cookie);
 		return new ResponseEntity<>(new ResponseSuccess("Logged In", true), HttpStatus.OK);
 	}
