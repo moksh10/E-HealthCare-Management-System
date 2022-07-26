@@ -62,7 +62,7 @@ public class AuthController {
 		cookie.setSecure(true);
 		cookie.setMaxAge(60 * 60 * 6);
 //		ResponseCookie responseCookie=new ResponseCookie();
-//		responseCookie.
+//		responseCookie.sd
 	//	response.addCookie(cookie);
 		//ds
 		response.setHeader("Set-Cookie", "jwt="+jwt+"; HttpOnly; Secure; SameSite=none");
