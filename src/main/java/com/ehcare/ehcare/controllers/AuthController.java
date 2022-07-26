@@ -64,6 +64,7 @@ public class AuthController {
 //		ResponseCookie responseCookie=new ResponseCookie();
 //		responseCookie.
 	//	response.addCookie(cookie);
+		//ds
 		response.setHeader("Set-Cookie", "jwt="+jwt+"; HttpOnly; Secure; SameSite=none");
 		return new ResponseEntity<>(new ResponseSuccess("Logged In", true), HttpStatus.OK);
 	}
