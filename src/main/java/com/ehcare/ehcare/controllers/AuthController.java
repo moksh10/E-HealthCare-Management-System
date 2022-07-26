@@ -44,14 +44,13 @@ public class AuthController {
 	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthenticationRequest authenticationRequest,
 			HttpServletResponse response) throws Exception {
 
-		System.out.println(authenticationRequest.getEmail()+" "+authenticationRequest.getPassword());
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-					authenticationRequest.getEmail() + "#" + authenticationRequest.getRole(),
-					authenticationRequest.getPassword()));
-		} catch (BadCredentialsException e) {
-			throw new BadCredentialsException("Incorrect email or password");
-		}
+//		try {
+//			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//					authenticationRequest.getEmail() + "#" + authenticationRequest.getRole(),
+//					authenticationRequest.getPassword()));
+//		} catch (BadCredentialsException e) {
+//			throw new BadCredentialsException("Incorrect email or password");
+//		}
 
 		final UserDetails userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getEmail() + "#" + authenticationRequest.getRole());
