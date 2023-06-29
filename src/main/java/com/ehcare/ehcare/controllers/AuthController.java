@@ -28,7 +28,7 @@ import com.ehcare.ehcare.util.JwtUtil;
 import com.ehcare.ehcare.util.UserInfo;
 
 @RestController
-@CrossOrigin(origins = "https://the12thplayer-wvehgh.web.app",allowCredentials = "true")
+@CrossOrigin(origins = "https://tourmaline-florentine-e8e1b9.netlify.app",allowCredentials = "true")
 public class AuthController {
 
 	@Autowired

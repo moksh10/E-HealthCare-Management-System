@@ -26,7 +26,7 @@ import com.ehcare.ehcare.util.DateUtil;
 
 @RestController
 @RequestMapping(path = "/appointment")
-@CrossOrigin(origins = "https://the12thplayer-wvehgh.web.app",allowCredentials = "true")
+@CrossOrigin(origins = "https://tourmaline-florentine-e8e1b9.netlify.app",allowCredentials = "true")
 public class AppointmentController {
 
 	@Autowired
