@@ -24,7 +24,7 @@ import com.ehcare.ehcare.services.DoctorService;
 
 @RestController
 @RequestMapping(path = "/doctor")
-@CrossOrigin(origins = "https://tourmaline-florentine-e8e1b9.netlify.app",allowCredentials = "true")
+@CrossOrigin(origins = "https://tourmaline-florentine-e8e1b9.netlify.app/",allowCredentials = "true")
 public class DoctorController {
 
 	@Autowired
