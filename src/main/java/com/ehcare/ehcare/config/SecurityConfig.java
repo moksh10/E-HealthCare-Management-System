@@ -47,11 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 //		security.authorizeHttpRequests().anyRequest().permitAll();
 //		security.csrf().disable();
+		// .antMatchers("/admin/**").hasAuthority("ADMIN")
 		security.cors().and().csrf().disable().authorizeRequests()
     	.antMatchers("/authFailure").permitAll()
     	.antMatchers(HttpMethod.POST,"/auth").permitAll()
     	.antMatchers(HttpMethod.POST,"/patient").permitAll()
     	.antMatchers(HttpMethod.GET,"/doctor/**").permitAll()
+    	.antMatchers("/admin/**").permitAll()
     	.antMatchers(HttpMethod.POST,"/appointment/**").hasAnyAuthority("ADMIN","PATIENT")
     	.antMatchers("/appointment/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
     	.antMatchers(HttpMethod.GET,"/medicalRecord/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
@@ -60,7 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	.antMatchers("/doctor/**").hasAnyAuthority("ADMIN","DOCTOR")
     	.antMatchers(HttpMethod.GET,"/patient/**").hasAnyAuthority("ADMIN","DOCTOR","PATIENT")
     	.antMatchers("/patient/**").hasAnyAuthority("ADMIN","PATIENT")
-    	.antMatchers("/admin/**").hasAuthority("ADMIN")
 		.antMatchers("/userInfo").authenticated()
     	.antMatchers("/isAuth").authenticated()
     	.antMatchers("/logoutUser").authenticated()
